@@ -1,9 +1,9 @@
 'use client'
 import { useState } from 'react';
-import FormSwitcher from '@ft/ui-components/formSwitcher';
-import Alert from '@ft/ui-components/Alert';
-import Breadcrumb from '@ft/ui-components/breadcrumb';
-import ApplicationList from '@ft/ui-components/ApplicationList';
+import FormSwitcher from '@ft/ui-components/admin/formSwitcher';
+import Alert from '@ft/ui-components/admin/Alert';
+import Breadcrumb from '@ft/ui-components/admin/breadcrumb';
+import ApplicationList from '@ft/ui-components/admin/ApplicationList';
 const data = [
     {
         name: 'Gst no',

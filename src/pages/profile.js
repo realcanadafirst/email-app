@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import DefaultLayout from "@ft/ui-components/Layouts/DefaultLayout";
-import Breadcrumb from '@ft/ui-components/breadcrumb'
+import DefaultLayout from "@ft/ui-components/admin/Layouts/DefaultLayout";
+import Breadcrumb from '@ft/ui-components/admin/breadcrumb'
 import Image from "next/image";
 
 export default function Profile() {

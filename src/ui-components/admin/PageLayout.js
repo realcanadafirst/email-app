@@ -1,4 +1,4 @@
-import Header from '@ft/ui-components/header/Header';
+import Header from '@ft/ui-components/admin/header/Header';
 export const PageLayout = (props) => {
     return (
         <div className="dark:bg-boxdark-2 dark:text-bodydark">

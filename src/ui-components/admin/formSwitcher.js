@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import ConfirmationModal from '@ft/ui-components/ConfirmationModal';
+import ConfirmationModal from '@ft/ui-components/admin/ConfirmationModal';
 
 const FormSwitcher = ({ name, enabled, id, handleConfirmation }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);

@@ -1,4 +1,4 @@
-import DefaultLayout from "@ft/ui-components/Layouts/DefaultLayout";
+import DefaultLayout from "@ft/ui-components/admin/Layouts/DefaultLayout";
 
 export default function Custom404() {
     return (

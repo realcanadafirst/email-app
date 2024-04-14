@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import ApplicationCheckbox from '@ft/ui-components/ApplicationCheck';
+import ApplicationCheckbox from '@ft/ui-components/admin/ApplicationCheck';
 
 const ApplicationList = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);

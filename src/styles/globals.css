@@ -18,12 +18,12 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
+}
+body.admin {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(to bottom,
       transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
 }
 
 @layer utilities {
@@ -31,6 +31,12 @@ body {
     text-wrap: balance;
   }
 }
-.login-header{
+
+.login-header {
   background-color: rgb(36 48 63 / var(--tw-bg-opacity));
+}
+
+.logo-header {
+  height: 50px;
+  width: 150px;
 }

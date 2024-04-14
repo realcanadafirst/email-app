@@ -1,13 +1,21 @@
 'use client'
 import Link from "next/link";
-import DarkModeSwitcher from "@ft/ui-components/Layouts/DarkModeSwitcher";
-import DropdownUser from "@ft/ui-components/Layouts/DropdownUser";
+import DarkModeSwitcher from "@ft/ui-components/admin/Layouts/DarkModeSwitcher";
+import DropdownUser from "@ft/ui-components/admin/Layouts/DropdownUser";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 const Header = ({ sidebarOpen, setSidebarOpen }) => {
-    const isAuthenticated = true;
+    const [isAuthenticated, setIsAuthenticated] = useState(false)
+    useEffect(() => {
+        if (localStorage.getItem('userData')) {
+            setIsAuthenticated(true);
+        } else {
+            setIsAuthenticated(false);
+        }
+    }, [])
     return (
-        <header className={`sticky top-0 z-999 flex w-full bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none ${isAuthenticated ? '' : 'login-header'} `}>
+        <header className={`sticky top-0 z-999 flex w-full bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none`}>
             {
                 isAuthenticated ? <div className="flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11">
                     <div className="flex items-center gap-2 sm:gap-4 lg:hidden">
@@ -68,30 +76,23 @@ const Header = ({ sidebarOpen, setSidebarOpen }) => {
                     </div>
                 </div>
                     : <div className="flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11">
-                        <div className="flex items-center gap-2 sm:gap-4 lg:hidden">
-
-                            <Link href="/">
-                                <Image
-                                    width={176}
-                                    height={32}
-                                    src={"/images/logo/logo-icon.svg"}
-                                    alt="Logo"
-                                    priority
-                                />
+                        <div className="flex items-center gap-2 sm:gap-4 ">
+                            <Link className="block flex-shrink-0" href="/">
+                                <Image src={"/images/logo-no-background.png"} alt="Logo" className="logo-header" width={150} height={50} />
                             </Link>
                         </div>
-
                         <div className="hidden sm:block">
 
                         </div>
                         <div className="flex items-center gap-3 2xsm:gap-7">
-                            
+                            <ul className="flex items-center gap-2 2xsm:gap-4">
+                                <Link className="block flex-shrink-0" href="/login">
+                                    <button className="inline-flex items-center justify-center rounded-md border border-meta-3 px-10 py-2 text-center font-medium text-meta-3 hover:bg-opacity-90 lg:px-8 xl:px-10">Login</button>
+                                </Link>
+                            </ul>
                         </div>
                     </div>
             }
-
-
-
         </header>
     );
 };

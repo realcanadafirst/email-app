@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import SidebarLinkGroup from "@ft/ui-components/Layouts/SidebarLinkGroup";
+import SidebarLinkGroup from "@ft/ui-components/admin/Layouts/SidebarLinkGroup";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     const pathname = usePathname();
@@ -102,7 +102,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                                             <Link
                                                 href="#"
                                                 className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === "/" ||
-                                                    pathname.includes("dashboard")) &&
+                                                    pathname.includes("dashboard") || pathname.includes("subscription") || pathname.includes("users")) &&
                                                     "bg-graydark dark:bg-meta-4"
                                                     }`}
                                                 onClick={(e) => {
@@ -162,8 +162,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                                                 <ul className="mb-5.5 mt-4 flex flex-col gap-2.5 pl-6">
                                                     <li>
                                                         <Link
-                                                            href="/"
-                                                            className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${pathname === "/" && "text-white"
+                                                            href="/dashboard"
+                                                            className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${pathname === "/dashboard" && "text-white"
                                                                 }`}
                                                         >
                                                             Home
@@ -171,20 +171,20 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                                                     </li>
                                                     <li>
                                                         <Link
-                                                            href="/applications"
-                                                            className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${pathname === "/applications" && "text-white"
+                                                            href="/subscription"
+                                                            className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${pathname === "/subscription" && "text-white"
                                                                 }`}
                                                         >
-                                                            Applications
+                                                            Subscription
                                                         </Link>
                                                     </li>
                                                     <li>
                                                         <Link
-                                                            href="/environments"
+                                                            href="/users"
                                                             className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${pathname === "/environments" && "text-white"
                                                                 }`}
                                                         >
-                                                            Environments
+                                                            User
                                                         </Link>
                                                     </li>
                                                 </ul>

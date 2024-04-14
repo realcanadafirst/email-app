@@ -1,12 +1,19 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 const DropdownUser = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [userdata, setUserData] = useState(null);
     const trigger = useRef(null);
     const dropdown = useRef(null);
-
+    const router = useRouter();
+    useEffect(() => {
+        if (localStorage.getItem('userData')) {
+            setUserData(JSON.parse(localStorage.getItem('userData')))
+        }
+    }, [])
     useEffect(() => {
         const clickHandler = ({ target }) => {
             if (!dropdown.current) return;
@@ -29,7 +36,10 @@ const DropdownUser = () => {
         document.addEventListener("keydown", keyHandler);
         return () => document.removeEventListener("keydown", keyHandler);
     });
-
+    const logout = () => {
+        localStorage.removeItem('userData');
+        router.push('/')
+    }
     return (
         <div className="relative">
             <Link
@@ -40,9 +50,9 @@ const DropdownUser = () => {
             >
                 <span className="hidden text-right lg:block">
                     <span className="block text-sm font-medium text-black dark:text-white">
-                        Manish singh
+                        {userdata?.email}
                     </span>
-                    <span className="block text-xs">Amin</span>
+                    <span className="block text-xs">Admin</span>
                 </span>
 
                 <span className="h-12 w-12 rounded-full">
@@ -108,7 +118,7 @@ const DropdownUser = () => {
                         </Link>
                     </li>
                 </ul>
-                <button className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+                <button className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base" onClick={logout}>
                     <svg
                         className="fill-current"
                         width="22"
