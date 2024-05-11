@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
+  --foreground-rgb: 100, 116, 139;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
 }
@@ -18,7 +18,9 @@
 
 body {
   color: rgb(var(--foreground-rgb));
+  background-color: ghostwhite;
 }
+
 body.admin {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(to bottom,
@@ -39,4 +41,35 @@ body.admin {
 .logo-header {
   height: 50px;
   width: 150px;
+}
+
+.ck.ck-editor__main>.ck-editor__editable {
+  min-height: 350px !important;
+}
+
+.show-template {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 450px;
+}
+.min-w-52{
+  min-width : 520px
+}
+
+.overflow-auto {
+  scrollbar-width: thin;
+  scrollbar-color: #9a67d9 rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(155, 155, 155, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(155, 155, 155, 0.8);
 }

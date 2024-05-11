@@ -15,7 +15,7 @@ export default function Login() {
         if(localStorage.getItem('userData')){
             router.push('dashboard')
         }
-    },[])
+    },[router])
     const handleLogin = () => {
         if (formData.email && formData.email !== '' && formData.password && formData.password !== '') {
             setMessage({ msg: '', type: '' });

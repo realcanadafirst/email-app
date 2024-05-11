@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import ConfirmationModal from '@ft/ui-components/admin/ConfirmationModal';
+import EmailAppModal from '@ft/ui-components/admin/EmailAppModal';
 
 const FormSwitcher = ({ name, enabled, id, handleConfirmation }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -41,7 +41,7 @@ const FormSwitcher = ({ name, enabled, id, handleConfirmation }) => {
             >
                 {enabled ? 'Enabled' : 'Disabled'}
             </p>
-            <ConfirmationModal
+            <EmailAppModal
                 isOpen={isModalOpen}
                 enabled={enabled}
                 name={name}

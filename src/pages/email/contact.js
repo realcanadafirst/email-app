@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import DefaultLayout from "@ft/ui-components/admin/Layouts/DefaultLayout";
 import Breadcrumb from '@ft/ui-components/admin/breadcrumb';
-import TableOne from '@ft/ui-components/admin/TableOne';
+import TableProspects from '@ft/ui-components/admin/TableProspects';
 export default function Contact() {
     return (
         <DefaultLayout>
@@ -18,7 +18,7 @@ export default function Contact() {
                             </div>
                         </div>
                     </div>
-                    <TableOne />
+                    <TableProspects />
                 </div>
             </div>
         </DefaultLayout>

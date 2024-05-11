@@ -17,7 +17,7 @@ export default function SignUp() {
         if(localStorage.getItem('userData')){
             router.push('dashboard')
         }
-    },[])
+    },[router])
     const handleSignUp = () => {
         if (formData.name && formData.name !== '' && formData.email && formData.email !== '' && formData.password && formData.password !== '' && formData.cnfPassword && formData.cnfPassword !== '' && (formData.password == formData.cnfPassword)) {
             setMessage({ msg: '', type: '' });
