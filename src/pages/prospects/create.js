@@ -38,10 +38,12 @@ export default function CreateContact() {
                 status: formData.status,
                 organization_name: formData.organization_name
             };
-
+            setMessage({ msg: '', type: '' });
             fetchData('/api/v1/prospects', 'POST', postData).then((res) => {
                 if (res.status === 'success') {
                     router.push({ pathname: '/prospects/', query: { status: 'success' } });
+                } else if(res.data){
+                    setMessage({ msg: res.data, type: 'error' });
                 } else {
                     setMessage({ msg: 'Please fill all required fields', type: 'error' });
                 }

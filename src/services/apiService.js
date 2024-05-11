@@ -16,7 +16,12 @@ export async function fetchData(url, method = 'GET', postData = {}, formData = f
         }
         const response = await fetch(url, requestOptions);
         if (!response.ok) {
-            return { status: 'failed', data: null };
+            const data = await response.json();
+            if(data && data?.error){
+                return { status: 'failed', data: data.error };
+            } else {
+                return { status: 'failed', data: null };
+            }
         }
         const data = await response.json();
         return { status: 'success', data: data?.data ? data.data : [] };

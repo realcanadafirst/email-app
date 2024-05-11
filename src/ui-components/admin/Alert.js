@@ -4,7 +4,7 @@ const Alert = ({ message, setMessage }) => {
     useEffect(() => {
         setTimeout(() => {
             setMessage({ msg: '', type: '' });
-        }, 2000);
+        }, 5000);
     }, [message]);
     return (<>
         {

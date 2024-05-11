@@ -38,12 +38,7 @@ async function handlePostRequest(req, res) {
                     password: process.env.RDS_PASSWORD,
                     database: process.env.RDS_DATABASE,
                 });
-                connection.connect((err) => {
-                    if (err) {
-                        res.status(500).json({ error: 'Failed to connect to database' });
-                        return;
-                    }
-                });
+                connection.connect((err) => {if (err) {res.status(500).json({ error: 'Failed to connect to database' });return;}});
                 let failed = 0;
                 let totalrecords = 0;
                 data.forEach((element, index) => {
@@ -54,6 +49,10 @@ async function handlePostRequest(req, res) {
                             connection.query(query, [element[0], element[1], element[2], element[3], element[4]], (err, results) => {
                                 if (err) {
                                     failed++;
+                                    if (err.code === 'ER_DUP_ENTRY' && err?.sqlMessage) {
+                                        const query = 'INSERT INTO error_log (message) VALUES (?)';
+                                        connection.query(query, [err.sqlMessage], (err, results) => {});
+                                    }
                                 }
                             });
                         } catch (error) {
@@ -61,7 +60,6 @@ async function handlePostRequest(req, res) {
                         }
                     }
                 });
-                connection.end();
                 res.status(200).json({ data: totalrecords, message: `Out of ${totalrecords} Records ${totalrecords - failed} Records uploaded successfully` });
                 return;
             } else {
