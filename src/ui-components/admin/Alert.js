@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 const Alert = ({ message, setMessage }) => {
     useEffect(() => {
         setTimeout(() => {
-            setMessage({ msg: '', type: '' });
+           setMessage({ msg: '', type: '' });
         }, 5000);
-    }, [message]);
+    }, []);
     return (<>
         {
             message.msg && <div className={`flex w-full border-l-6 bg-opacity-[15%] px-5 py-3 shadow-md dark:bg-opacity-30 md:p-5 ${message?.type === 'success' ? 'border-[#34D399] bg-[#34D399] dark:bg-[#1B1B24]' : 'border-[#F87171] bg-[#F87171] dark:bg-[#1B1B24]'}`}>
