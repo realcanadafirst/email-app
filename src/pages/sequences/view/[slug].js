@@ -31,7 +31,7 @@ export default function SequenceUpdate() {
         intervalTimeMin: '',
         taskPriority: '0',
         taskNote: '',
-        template_name: '',
+        subject: '',
         template: '',
         status: 1
     });
@@ -61,7 +61,7 @@ export default function SequenceUpdate() {
     const getTemplates = () => {
         fetchData(`/api/v1/templates`, 'GET').then((res) => {
             if (res.status === 'success' && res?.data?.length) {
-                const templates_t = res.data.map((val) => { return { value: val.id, label: val.template_name, data: val.template } });
+                const templates_t = res.data.map((val) => { return { value: val.id, label: val.subject, data: val.template } });
                 setTemplates(templates_t);
             } else {
                 setMessage({ msg: 'Failed to get templates please try again', type: 'error' });
@@ -107,7 +107,7 @@ export default function SequenceUpdate() {
                 intervalTime: `${formData.intervalTimeDay}:${formData.intervalTimeHour}:${formData.intervalTimeMin}`,
                 taskPriority: formData.taskPriority,
                 taskNote: formData.taskNote,
-                template_name: selectedTemplates.label,
+                subject: selectedTemplates.label,
                 template: selectedTemplates.data,
                 status: formData.status,
             };
@@ -140,7 +140,7 @@ export default function SequenceUpdate() {
             {slug ? <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
                 <div className="mx-auto max-w-270">
                     <Breadcrumb pageName={`Sequence: ${sequence?.name}`} />
-                    <Alert message={message} setMessage={setMessage} />
+                   {message.msg ? <Alert message={message} setMessage={setMessage} /> : null}
                     <div className="mb-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
                         <ul className="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-styled-tab" data-tabs-toggle="#default-styled-tab-content" data-tabs-active-classes="text-purple-600 hover:text-purple-600 dark:text-purple-500 dark:hover:text-purple-500 border-purple-600 dark:border-purple-500" data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300" role="tablist">
                             <li className="me-2" role="presentation">

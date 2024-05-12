@@ -16,12 +16,16 @@ const SequenceProspects = ({ id, assignedProspects, setAssignedProspects, callAp
                 const prospects_t = res.data['prospects'];
                 const prospects_a = res.data['assigned_prospects'];
                 const assignedProspectsTemp = prospects_a.map(mainItem => {
-                    const foundItem = prospects_t.find(filterItem => filterItem.id === mainItem.prospects_id);
+                    const pros_data = JSON.parse(mainItem.prospects)
+                    const foundItem = prospects_t.find(filterItem => filterItem.id === pros_data.value);
                     return foundItem ? { ...foundItem, prospects_id: mainItem.id } : null;
                 });
-                const options_t = prospects_t.filter(mainItem => !prospects_a.some(filterItem => filterItem.prospects_id === mainItem.id));
+                const options_t = prospects_t.filter(mainItem => !prospects_a.some(filterItem => {
+                    const pros_data = JSON.parse(filterItem.prospects)
+                    return pros_data.value === mainItem.id
+                }));
                 setAssignedProspects([...assignedProspectsTemp]);
-                const options_temp = options_t.map((val) => { return { value: val.id, label: val.firstName } });
+                const options_temp = options_t.map((val) => { return { value: val.id, label: val.firstName, email: val.email, firstName: val.firstName, lastName: val.lastName, phoneNumber: val.phoneNumber } });
                 setProspects([...options_temp]);
             } else {
                 setMessage({ msg: 'Failed to get prospects please try again', type: 'error' });

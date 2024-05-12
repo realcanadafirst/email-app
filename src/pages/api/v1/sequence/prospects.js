@@ -56,20 +56,16 @@ async function handlePostRequest(req, res) {
         });
         const c_id = req.query?.s_id ? req.query?.s_id : null;
         const { prospects } = req.body;
-        let query = 'INSERT INTO sequence_prospects (sequence_id, prospects_id, sequence_status)';
+        let query = 'INSERT INTO sequence_prospects (sequence_id, prospects, sequence_status)';
         const data = [];
         prospects.forEach(element => {
             query = query + 'VALUES (?, ?, ?)';
             data.push(c_id);
-            data.push(element.value);
+            data.push(JSON.stringify(element));
             data.push('0');
         });
         connection.query(query, data, (err, results) => {
-            if (err) {
-                console.log(err)
-                res.status(500).json({ error: 'Failed to insert data' });
-                return;
-            }
+            if (err) {res.status(500).json({ error: 'Failed to insert data' });return;}
             res.status(200).json({ data: results });
         });
         connection.end();

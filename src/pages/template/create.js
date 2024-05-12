@@ -32,7 +32,7 @@ export default function CreateTemplate() {
         fetchData(`/api/v1/templates?c_id=${templateId}`, 'GET').then((res) => {
             if (res.status === 'success' && res?.data && Array.isArray(res.data) && res.data.length && res.data[0]) {
                 formData.id = res.data[0].id;
-                formData.subject = res.data[0].template_name;
+                formData.subject = res.data[0].subject;
                 dataChange(res.data[0].template);
             } else {
                 setMessage({ msg: 'Failed to get templates please try again', type: 'error' });

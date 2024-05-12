@@ -45,9 +45,9 @@ async function handlePostRequest(req, res) {
         });
         const step = req.query?.step ? req.query?.step : null;
         if (step) {
-            const { template_name, template } = req.body;
-            const query = `UPDATE sequence_steps SET template_name = ?, template = ? WHERE id = ?`;
-            connection.query(query, [template_name, template, step], (err, results) => {
+            const { subject, template } = req.body;
+            const query = `UPDATE sequence_steps SET subject = ?, template = ? WHERE id = ?`;
+            connection.query(query, [subject, template, step], (err, results) => {
                 if (err) {
                     console.log(err)
                     res.status(500).json({ error: 'Failed to insert data' });
@@ -57,9 +57,9 @@ async function handlePostRequest(req, res) {
             });
         } else {
             const c_id = req.query?.s_id ? req.query?.s_id : null;
-            const { stepType, intervalTime, taskPriority, taskNote, template_name, template, status } = req.body;
-            let query = 'INSERT INTO sequence_steps (sequence_id, step_type, interval_time, priority, note, template_name, template, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-            connection.query(query, [c_id, stepType, intervalTime, taskPriority, taskNote, template_name, template, status], (err, results) => {
+            const { stepType, intervalTime, taskPriority, taskNote, subject, template, status } = req.body;
+            let query = 'INSERT INTO sequence_steps (sequence_id, step_type, interval_time, priority, note, subject, template, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+            connection.query(query, [c_id, stepType, intervalTime, taskPriority, taskNote, subject, template, status], (err, results) => {
                 if (err) {
                     console.log(err)
                     res.status(500).json({ error: 'Failed to insert data' });

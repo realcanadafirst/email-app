@@ -7,7 +7,7 @@ import { fetchData } from '@ft/services/apiService';
 const SequenceStepList = ({ stepData, setStepCallApi, setMessage }) => {
     const [formData, setFormData] = useState({
         id: stepData.id,
-        subject: stepData.template_name,
+        subject: stepData.subject,
         template: stepData.template,
     });
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,7 +26,7 @@ const SequenceStepList = ({ stepData, setStepCallApi, setMessage }) => {
     const updateSequenceApi = () => {
         if (formData.subject && formData.subject !== '' && formData.template && formData.template !== '') {
             const postData = {
-                template_name: formData.subject,
+                subject: formData.subject,
                 template: formData.template,
             };
             setMessage({ msg: '', type: '' });
@@ -67,7 +67,7 @@ const SequenceStepList = ({ stepData, setStepCallApi, setMessage }) => {
                     </div>
                     <div className="px-7.5 py-3 hover:bg-gray-3 dark:hover:bg-meta-4 cursor-pointer" onClick={() => handleModal(true)}>
                         <div className="flex flex-1 items-center justify-between">
-                            <p className="text-sm"> Subject :<span className="text-sm"> {stepData.template_name}</span></p>
+                            <p className="text-sm"> Subject :<span className="text-sm"> {stepData.subject}</span></p>
                         </div>
                         <div className="flex flex-1 items-center justify-between py-2">
                             <span className="text-xs">

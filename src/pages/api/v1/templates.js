@@ -49,10 +49,10 @@ async function handlePostRequest(req, res) {
             }
         });
         const { id, subject, template } = req.body;
-        let query = 'INSERT INTO templates (template_name, template) VALUES (?, ?)';
+        let query = 'INSERT INTO templates (subject, template) VALUES (?, ?)';
         const values = [subject, template];
         if (id) {
-            query = `UPDATE templates SET template_name = ?, template = ? WHERE id = ?`;
+            query = `UPDATE templates SET subject = ?, template = ? WHERE id = ?`;
             values.push(id);
         }
         connection.query(query, values, (err, results) => {
