@@ -44,22 +44,23 @@ async function handlePostRequest(req, res) {
             if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; }
         });
         const step = req.query?.step ? req.query?.step : null;
+        console.log(req.query)
         if (step) {
-            const { subject, template } = req.body;
-            const query = `UPDATE sequence_steps SET subject = ?, template = ? WHERE id = ?`;
-            connection.query(query, [subject, template, step], (err, results) => {
-                if (err) {
-                    console.log(err)
-                    res.status(500).json({ error: 'Failed to insert data' });
-                    return;
-                }
-                res.status(200).json({ data: results });
-            });
+            if (req.query?.test) {
+                sendTestEmail(req, res);
+            } else {
+                const { subject, template } = req.body;
+                const query = `UPDATE sequence_steps SET subject = ?, template = ? WHERE id = ?`;
+                connection.query(query, [subject, template, step], (err, results) => {
+                    if (err) { res.status(500).json({ error: 'Failed to insert data' }); return; }
+                    res.status(200).json({ data: results });
+                });
+            }
         } else {
             const c_id = req.query?.s_id ? req.query?.s_id : null;
-            const { stepType, intervalTime, taskPriority, taskNote, subject, template, status } = req.body;
-            let query = 'INSERT INTO sequence_steps (sequence_id, step_type, interval_time, priority, note, subject, template, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-            connection.query(query, [c_id, stepType, intervalTime, taskPriority, taskNote, subject, template, status], (err, results) => {
+            const { stepType, intervalTime, taskPriority, taskNote, subject, template, status, execution_date } = req.body;
+            let query = 'INSERT INTO sequence_steps (sequence_id, step_type, interval_time, execution_date, priority, note, subject, template, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+            connection.query(query, [c_id, stepType, intervalTime, execution_date, taskPriority, taskNote, subject, template, status], (err, results) => {
                 if (err) {
                     console.log(err)
                     res.status(500).json({ error: 'Failed to insert data' });
@@ -83,7 +84,6 @@ async function handlePutRequest(req, res) {
             connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
             if (status == 3) {
                 const query = `DELETE FROM sequence_prospects WHERE id = ${c_id}`;
-                console.log(query)
                 connection.query(query, (err, results) => {
                     if (err) { res.status(500).json({ error: 'Failed to delete data from database' }); return; }
                     res.status(200).json({ data: results });
@@ -134,4 +134,8 @@ async function handleDeleteRequest(req, res) {
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
     }
+}
+
+async function sendTestEmail(req, res) {
+
 }

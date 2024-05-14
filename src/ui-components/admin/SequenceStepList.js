@@ -10,8 +10,8 @@ const SequenceStepList = ({ stepData, setStepCallApi, setMessage }) => {
         subject: stepData.subject,
         template: stepData.template,
     });
+    const [sendTestEmailStatus, setSendTestEmailStatus] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const handleModal = (value) => setIsModalOpen(value);
     const handleChange = (e) => {
         const formDataTemp = { ...formData }
         formDataTemp[e.target.name] = e.target.value;
@@ -30,7 +30,11 @@ const SequenceStepList = ({ stepData, setStepCallApi, setMessage }) => {
                 template: formData.template,
             };
             setMessage({ msg: '', type: '' });
-            fetchData(`/api/v1/sequence/steps?step=${stepData.id}`, 'POST', postData).then((res) => {
+            let url = `/api/v1/sequence/steps?step=${stepData.id}`;
+            if(sendTestEmailStatus){
+                url = `/api/v1/webhooks/send?test=true`;
+            }
+            fetchData(url, 'POST', postData).then((res) => {
                 if (res.status === 'success') {
                     setIsModalOpen(false);
                     setStepCallApi(true);
@@ -56,16 +60,26 @@ const SequenceStepList = ({ stepData, setStepCallApi, setMessage }) => {
             />
         }
     }
+    const sendTestEmail = (value, issendEmail= '') => {
+        if(issendEmail !== ''){
+            setSendTestEmailStatus(true);
+        }
+        if(!value){
+            setSendTestEmailStatus(false);
+        }
+        setIsModalOpen(value);
+    }
     return (
         <>
             {
                 stepData ? <div className="col-span-12 mb-9 rounded-sm border border-stroke bg-white drop-shadow-1 dark:border-strokedark dark:bg-boxdark xl:col-span-4">
-                    <div className="flex px-7.5 py-3">
+                    <div className="flex justify-between px-7.5 py-3">
                         <div className="inline-flex items-center justify-center gap-2.5 text-center font-medium text-sm">
                             <span className="text-primary"> <MoreIcon /> </span> {getStepTitle()}
                         </div>
+                        <button className="text-sm text-primary" onClick={()=> {sendTestEmail(true, 'sendEmail'); }}> Send Test email</button>
                     </div>
-                    <div className="px-7.5 py-3 hover:bg-gray-3 dark:hover:bg-meta-4 cursor-pointer" onClick={() => handleModal(true)}>
+                    <div className="px-7.5 py-3 hover:bg-gray-3 dark:hover:bg-meta-4 cursor-pointer" onClick={() => sendTestEmail(true)}>
                         <div className="flex flex-1 items-center justify-between">
                             <p className="text-sm"> Subject :<span className="text-sm"> {stepData.subject}</span></p>
                         </div>
@@ -82,10 +96,10 @@ const SequenceStepList = ({ stepData, setStepCallApi, setMessage }) => {
             }
             <EmailAppModal
                 isOpen={isModalOpen}
-                onClose={handleModal}
-                confirmMsg="Save"
+                onClose={sendTestEmail}
+                confirmMsg={sendTestEmailStatus ? "Send Test Email": "Save"}
                 onConfirm={() => { updateSequenceApi() }}>
-                <AddTemplateForm handleChange={handleChange} formData={formData} dataChange={dataChange} />
+                <AddTemplateForm handleChange={handleChange} formData={formData} dataChange={dataChange} sendTestEmailStatus={sendTestEmailStatus} />
             </EmailAppModal>
         </>
     );

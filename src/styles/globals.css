@@ -53,8 +53,9 @@ body.admin {
   text-overflow: ellipsis;
   max-width: 450px;
 }
-.min-w-52{
-  min-width : 520px
+
+.min-w-52 {
+  min-width: 520px
 }
 
 .overflow-auto {
@@ -65,6 +66,7 @@ body.admin {
 ::-webkit-scrollbar {
   width: 8px;
 }
+
 ::-webkit-scrollbar-thumb {
   background: rgba(155, 155, 155, 0.5);
   border-radius: 4px;
@@ -72,4 +74,16 @@ body.admin {
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(155, 155, 155, 0.8);
+}
+
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+.react-datepicker__view-calendar-icon input {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+.react-datepicker__input-container .react-datepicker__calendar-icon{
+  padding-top: 1rem;
 }

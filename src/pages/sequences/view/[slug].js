@@ -29,6 +29,7 @@ export default function SequenceUpdate() {
         intervalTimeDay: '',
         intervalTimeHour: '',
         intervalTimeMin: '',
+        execution_date: new Date(),
         taskPriority: '0',
         taskNote: '',
         subject: '',
@@ -101,10 +102,19 @@ export default function SequenceUpdate() {
     }
 
     const createSteps = () => {
-        if (formData.stepType && formData.stepType !== '' && formData.intervalTimeDay && formData.intervalTimeDay !== '' && formData.intervalTimeHour && formData.intervalTimeHour !== '' && formData.intervalTimeMin && formData.intervalTimeMin !== '' && formData.taskPriority && formData.taskPriority !== '' && formData.taskNote && formData.taskNote !== '' && selectedTemplates && selectedTemplates.value !== '') {
+        if (formData.stepType && formData.stepType !== '' && ((formData.intervalTimeDay && formData.intervalTimeDay !== '' && formData.intervalTimeHour && formData.intervalTimeHour !== '' && formData.intervalTimeMin && formData.intervalTimeMin !== '') || (formData.execution_date && formData.execution_date !== '')) && formData.taskPriority && formData.taskPriority !== '' && formData.taskNote && formData.taskNote !== '' && selectedTemplates && selectedTemplates.value !== '') {
+            const currentTime = new Date().getTime();
+            let updatedTime = currentTime;
+            if (formData.intervalTimeDay && formData.intervalTimeDay !== '') {
+                updatedTime = new Date(currentTime + (formData.intervalTimeDay * 24 * 60 * 60 * 1000) + (formData.intervalTimeHour * 60 * 60 * 1000) + (formData.intervalTimeMin * 60 * 1000)).getTime();
+            } else {
+                updatedTime = new Date(formData.execution_date).getTime();
+            }
+            updatedTime = new Date(updatedTime + 19800000);
             const postData = {
                 stepType: formData.stepType,
                 intervalTime: `${formData.intervalTimeDay}:${formData.intervalTimeHour}:${formData.intervalTimeMin}`,
+                execution_date: updatedTime,
                 taskPriority: formData.taskPriority,
                 taskNote: formData.taskNote,
                 subject: selectedTemplates.label,
@@ -114,6 +124,19 @@ export default function SequenceUpdate() {
             setMessage({ msg: '', type: '' });
             fetchData(`/api/v1/sequence/steps?s_id=${slug}`, 'POST', postData).then((res) => {
                 if (res.status === 'success') {
+                    setFormData({
+                        stepType: '',
+                        intervalTimeDay: '',
+                        intervalTimeHour: '',
+                        intervalTimeMin: '',
+                        execution_date: new Date(),
+                        taskPriority: '0',
+                        taskNote: '',
+                        subject: '',
+                        template: '',
+                        status: 1
+                    });
+                    setSelectedTemplates([]);
                     setIsModalOpen(false);
                     setStepCallApi(true);
                     setMessage({ msg: 'Sequence step created successfully!', type: 'success' });
@@ -148,9 +171,9 @@ export default function SequenceUpdate() {
             fetchData('/api/v1/sequences', 'POST', postData).then((res) => {
                 if (res.status === 'success') {
                     setMessage({ msg: 'Sequence created successfully!', type: 'success' });
-                    setTimeout(()=>{
-                      router.push({ pathname: `/sequences/view/${slug}`, query: { status: 'success' } });
-                    },1000)
+                    setTimeout(() => {
+                        router.push({ pathname: `/sequences/view/${slug}`, query: { status: 'success' } });
+                    }, 1000)
                 } else {
                     setMessage({ msg: 'Please fill all required fields', type: 'error' });
                 }
@@ -158,6 +181,12 @@ export default function SequenceUpdate() {
         } else {
             setMessage({ msg: 'Please fill all required fields', type: 'error' });
         }
+    }
+
+    const setSequenceDate = (date) => {
+        const formDataTemp = { ...formData };
+        formDataTemp['execution_date'] = date;
+        setFormData(formDataTemp);
     }
 
     return (
@@ -215,7 +244,7 @@ export default function SequenceUpdate() {
                     confirmMsg={'Save'}
                     onConfirm={() => { createSequenceApi() }}>
                     {
-                        activeTab === 'styled-overview' ? <CreateSequenceStep formData={formData} handleChange={handleChange} message={message} setMessage={setMessage} sequence={sequence} templates={templates} selectedTemplates={selectedTemplates} handleMultiSelectTemplates={handleMultiSelectTemplates} /> : <AssignSequenceProspects prospects={prospects} onChange={handleMultiSelectProspects} selectedProspects={selectedProspects} message={message} setMessage={setMessage} />
+                        activeTab === 'styled-overview' ? <CreateSequenceStep formData={formData} handleChange={handleChange} message={message} setMessage={setMessage} sequence={sequence} templates={templates} selectedTemplates={selectedTemplates} handleMultiSelectTemplates={handleMultiSelectTemplates} setSequenceDate={setSequenceDate} /> : <AssignSequenceProspects prospects={prospects} onChange={handleMultiSelectProspects} selectedProspects={selectedProspects} message={message} setMessage={setMessage} />
                     }
                 </EmailAppModal>
             </div> : null}
