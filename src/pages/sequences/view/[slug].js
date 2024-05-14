@@ -191,19 +191,19 @@ export default function SequenceUpdate() {
 
                     </div>
                     <div id="default-styled-tab-content">
-                        <div className={`p-4 rounded-lg bg-gray-50 dark:bg-gray-800 ${activeTab === 'styled-overview' ? 'block' : 'hidden'
+                        <div className={`p-4 rounded-lg bg-white ${activeTab === 'styled-overview' ? 'block' : 'hidden'
                             }`} id="styled-overview" role="tabpanel" aria-labelledby="overview-tab">
                             {slug ? <SequenceOverView id={slug} callStepApi={callStepApi} setStepCallApi={setStepCallApi} setMessage={setMessage} /> : null}
                         </div>
-                        <div className={`p-4 rounded-lg bg-gray-50 dark:bg-gray-800 ${activeTab === 'styled-insights' ? 'block' : 'hidden'
+                        <div className={`p-4 rounded-lg bg-white ${activeTab === 'styled-insights' ? 'block' : 'hidden'
                             }`} id="styled-insights" role="tabpanel" aria-labelledby="insights-tab">
                             <p className="text-sm text-gray-500 dark:text-gray-400"> No records to show </p>
                         </div>
-                        <div className={`p-4 rounded-lg bg-gray-50 dark:bg-gray-800 ${activeTab === 'styled-settings' ? 'block' : 'hidden'
+                        <div className={`p-4 rounded-lg bg-white ${activeTab === 'styled-settings' ? 'block' : 'hidden'
                             }`} id="styled-settings" role="tabpanel" aria-labelledby="settings-tab">
                             {slug ? <SequenceSetting id={slug} sequence={sequence} saveSettings={saveSettings} /> : null}
                         </div>
-                        <div className={`p-4 rounded-lg bg-gray-50 dark:bg-gray-800 ${activeTab === 'styled-prospects' ? 'block' : 'hidden'
+                        <div className={`p-4 rounded-lg bg-white ${activeTab === 'styled-prospects' ? 'block' : 'hidden'
                             }`} id="styled-prospects" role="tabpanel" aria-labelledby="prospects-tab">
                             {slug ? <SequenceProspects id={slug} prospects={prospects} setProspects={setProspects} assignedProspects={assignedProspects} setAssignedProspects={setAssignedProspects} setCallApi={setCallApi} callApi={callApi} setMessage={setMessage} /> : null}
                         </div>
