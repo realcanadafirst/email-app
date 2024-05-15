@@ -9,12 +9,10 @@ export default function Setting() {
     return (
         <DefaultLayout>
             <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-                <div className="mx-auto max-w-270">
-                    <Breadcrumb pageName="App setings" />
-                    <Alert message={message} setMessage={setMessage} />
-                    <div className={`p-4 rounded-lg bg-white`}>
-                        <AppSetting />
-                    </div>
+                <Breadcrumb pageName="App setings" />
+                <Alert message={message} setMessage={setMessage} />
+                <div className={`p-4 rounded-lg bg-white`}>
+                    <AppSetting />
                 </div>
             </div>
         </DefaultLayout>

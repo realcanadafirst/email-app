@@ -19,7 +19,6 @@ async function handlePostRequest(req, res) {
     try {
         const form = new formidable();
         form.parse(req, (err, fields, files) => {
-            console.log(fields)
             if (err) {
                 res.status(500).json({ error: 'Error parsing form data' });
                 return;

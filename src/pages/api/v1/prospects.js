@@ -1,16 +1,15 @@
 import { createConnection } from 'mysql2';
-import formidable from 'formidable-serverless'
-import xlsx from 'xlsx';
 
 export default function handler(req, res) {
     if (req.method === 'GET') {
         handleGetRequest(req, res);
     } else if (req.method === 'POST') {
         const { actionType } = req.body;
-        if (actionType === 'upload') {
-            handleUploadRequest(req, res);
+        console.log(actionType)
+        if (actionType === 'test') {
+            handleTestRequest(req, res);
         } else {
-            handlePostRequest(req, res);
+            handleTestRequest(req, res);
         }
     } else if (req.method === 'DELETE') {
         handleDeleteRequest(req, res);
@@ -88,6 +87,41 @@ async function handlePostRequest(req, res) {
                     res.status(500).json({ error: err.sqlMessage });
                 } else {
                     res.status(500).json({ error: 'Failed to insert data' });
+                }
+                return;
+            }
+            res.status(200).json({ data: results });
+        });
+        connection.end();
+    } catch (error) {
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+async function handleTestRequest(req, res) {
+    try {
+        const connection = createConnection({ host: process.env.RDS_HOSTNAME, user: process.env.RDS_USERNAME, password: process.env.RDS_PASSWORD, database: process.env.RDS_DATABASE });
+        connection.connect((err) => {
+            if (err) {res.status(500).json({ error: 'Failed to connect to database' });return;}
+        });
+        let query = 'INSERT INTO Contacts (firstName, lastName, email, phoneNumber, organization_name) VALUES ?';
+        const data = [];
+        for(let i = 100; i < 300; i++){
+            const datat = [];
+            datat.push('email-app');
+            datat.push('test-'+i);
+            datat.push('email-app-test-'+i+'@yopmail.com');
+            datat.push('891066002'+i);
+            datat.push('email-app-org-'+i);
+            data.push(datat);
+        }
+        connection.query(query, [data], (err, results) => {
+            if (err) {
+                console.log(err)
+                if (err.code === 'ER_DUP_ENTRY' && err?.sqlMessage) {
+                    res.status(500).json({ error: err.sqlMessage });
+                } else {
+                    res.status(500).json({ error: 'Failed to insert datahh' });
                 }
                 return;
             }

@@ -73,33 +73,31 @@ export default function CreateTemplate() {
     return (
         <DefaultLayout>
             <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-                <div className="mx-auto max-w-270">
-                    <Breadcrumb pageName={pageName} />
+                <Breadcrumb pageName={pageName} />
 
-                    <div className="grid grid-cols-1">
-                        <div className="flex flex-col gap-9">
-                            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                                <div className="flex flex-col-reverse justify-between gap-6 py-4.5 pl-4 pr-4 sm:flex-row lg:pl-10 lg:pr-7.5 border-b border-stroke">
-                                    <div className="flex items-center gap-4">
-                                        <h3 className="font-medium text-black dark:text-white">
-                                            {pageName}
-                                        </h3>
+                <div className="grid grid-cols-1">
+                    <div className="flex flex-col gap-9">
+                        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                            <div className="flex flex-col-reverse justify-between gap-6 py-4.5 pl-4 pr-4 sm:flex-row lg:pl-10 lg:pr-7.5 border-b border-stroke">
+                                <div className="flex items-center gap-4">
+                                    <h3 className="font-medium text-black dark:text-white">
+                                        {pageName}
+                                    </h3>
 
-                                    </div>
-                                    <div className="relative">
-                                        <Link href="/templates" className={`flex rounded-md bg-primary px-5.5 py-2.5 font-medium text-white`}>
-                                            Back
-                                        </Link>
-                                    </div>
                                 </div>
-                                <Alert message={message} setMessage={setMessage} />
-                                <div className="p-6.5">
-                                    <AddTemplateForm handleChange={handleChange} formData={formData} dataChange={dataChange} />
-                                    <div className="flex justify-end gap-4.5">
-                                        <button className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90" onClick={saveContact}>
-                                            Save
-                                        </button>
-                                    </div>
+                                <div className="relative">
+                                    <Link href="/templates" className={`flex rounded-md bg-primary px-5.5 py-2.5 font-medium text-white`}>
+                                        Back
+                                    </Link>
+                                </div>
+                            </div>
+                            <Alert message={message} setMessage={setMessage} />
+                            <div className="p-6.5">
+                                <AddTemplateForm handleChange={handleChange} formData={formData} dataChange={dataChange} />
+                                <div className="flex justify-end gap-4.5">
+                                    <button className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90" onClick={saveContact}>
+                                        Save
+                                    </button>
                                 </div>
                             </div>
                         </div>

@@ -192,50 +192,48 @@ export default function SequenceUpdate() {
     return (
         <DefaultLayout>
             {slug ? <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-                <div className="mx-auto max-w-270">
-                    <Breadcrumb pageName={`Sequence: ${sequence?.name}`} />
-                    {message.msg ? <Alert message={message} setMessage={setMessage} /> : null}
-                    <div className="mb-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
-                        <ul className="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-styled-tab" data-tabs-toggle="#default-styled-tab-content" data-tabs-active-classes="text-purple-600 hover:text-purple-600 dark:text-purple-500 dark:hover:text-purple-500 border-purple-600 dark:border-purple-500" data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300" role="tablist">
-                            <li className="me-2" role="presentation">
-                                <button className={`inline-block p-4 border-b-2 rounded-t-lg ${activeTab === 'styled-overview' ? 'border-purple-600 text-purple-600 dark:text-purple-500' : 'hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'
-                                    }`} id="overview-styled-tab" data-tabs-target="#styled-overview" type="button" role="tab" aria-controls="overview" aria-selected={activeTab === 'styled-overview'} onClick={() => handleTabClick('styled-overview')}>Overview</button>
-                            </li>
-                            <li className="me-2" role="presentation">
-                                <button className={`inline-block p-4 border-b-2 rounded-t-lg ${activeTab === 'styled-insights' ? 'border-purple-600 text-purple-600 dark:text-purple-500' : 'hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'
-                                    }`} id="insights-styled-tab" data-tabs-target="#styled-insights" type="button" role="tab" aria-controls="profile" aria-selected={activeTab === 'styled-insights'} onClick={() => handleTabClick('styled-insights')}>Insights</button>
-                            </li>
-                            <li className="me-2" role="presentation">
-                                <button className={`inline-block p-4 border-b-2 rounded-t-lg ${activeTab === 'styled-settings' ? 'border-purple-600 text-purple-600 dark:text-purple-500' : 'hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'
-                                    }`} id="settings-styled-tab" data-tabs-target="#styled-settings" type="button" role="tab" aria-controls="settings" aria-selected={activeTab === 'styled-settings'} onClick={() => handleTabClick('styled-settings')}>Settings</button>
-                            </li>
-                            <li role="presentation">
-                                <button className={`inline-block p-4 border-b-2 rounded-t-lg ${activeTab === 'styled-prospects' ? 'border-purple-600 text-purple-600 dark:text-purple-500' : 'hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'
-                                    }`} id="prospects-styled-tab" data-tabs-target="#styled-prospects" type="button" role="tab" aria-controls="prospects" aria-selected={activeTab === 'styled-prospects'} onClick={() => handleTabClick('styled-prospects')}>Prospects</button>
-                            </li>
-                        </ul>
-                        {
-                            (activeTab === 'styled-overview' || activeTab === 'styled-prospects') ? <button className={`flex rounded-md bg-primary px-2 py-2.5 font-medium text-white`} onClick={() => handleModal(true)}>{activeTab === 'styled-overview' ? 'Add Step' : 'Assign Prospects'}</button> : null
-                        }
+                <Breadcrumb pageName={`Sequence: ${sequence?.name}`} />
+                {message.msg ? <Alert message={message} setMessage={setMessage} /> : null}
+                <div className="mb-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+                    <ul className="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-styled-tab" data-tabs-toggle="#default-styled-tab-content" data-tabs-active-classes="text-purple-600 hover:text-purple-600 dark:text-purple-500 dark:hover:text-purple-500 border-purple-600 dark:border-purple-500" data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300" role="tablist">
+                        <li className="me-2" role="presentation">
+                            <button className={`inline-block p-4 border-b-2 rounded-t-lg ${activeTab === 'styled-overview' ? 'border-purple-600 text-purple-600 dark:text-purple-500' : 'hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'
+                                }`} id="overview-styled-tab" data-tabs-target="#styled-overview" type="button" role="tab" aria-controls="overview" aria-selected={activeTab === 'styled-overview'} onClick={() => handleTabClick('styled-overview')}>Overview</button>
+                        </li>
+                        <li className="me-2" role="presentation">
+                            <button className={`inline-block p-4 border-b-2 rounded-t-lg ${activeTab === 'styled-insights' ? 'border-purple-600 text-purple-600 dark:text-purple-500' : 'hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'
+                                }`} id="insights-styled-tab" data-tabs-target="#styled-insights" type="button" role="tab" aria-controls="profile" aria-selected={activeTab === 'styled-insights'} onClick={() => handleTabClick('styled-insights')}>Insights</button>
+                        </li>
+                        <li className="me-2" role="presentation">
+                            <button className={`inline-block p-4 border-b-2 rounded-t-lg ${activeTab === 'styled-settings' ? 'border-purple-600 text-purple-600 dark:text-purple-500' : 'hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'
+                                }`} id="settings-styled-tab" data-tabs-target="#styled-settings" type="button" role="tab" aria-controls="settings" aria-selected={activeTab === 'styled-settings'} onClick={() => handleTabClick('styled-settings')}>Settings</button>
+                        </li>
+                        <li role="presentation">
+                            <button className={`inline-block p-4 border-b-2 rounded-t-lg ${activeTab === 'styled-prospects' ? 'border-purple-600 text-purple-600 dark:text-purple-500' : 'hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'
+                                }`} id="prospects-styled-tab" data-tabs-target="#styled-prospects" type="button" role="tab" aria-controls="prospects" aria-selected={activeTab === 'styled-prospects'} onClick={() => handleTabClick('styled-prospects')}>Prospects</button>
+                        </li>
+                    </ul>
+                    {
+                        (activeTab === 'styled-overview' || activeTab === 'styled-prospects') ? <button className={`flex rounded-md bg-primary px-2 py-2.5 font-medium text-white`} onClick={() => handleModal(true)}>{activeTab === 'styled-overview' ? 'Add Step' : 'Assign Prospects'}</button> : null
+                    }
 
+                </div>
+                <div id="default-styled-tab-content">
+                    <div className={`p-4 rounded-lg bg-white ${activeTab === 'styled-overview' ? 'block' : 'hidden'
+                        }`} id="styled-overview" role="tabpanel" aria-labelledby="overview-tab">
+                        {slug ? <SequenceOverView id={slug} callStepApi={callStepApi} setStepCallApi={setStepCallApi} setMessage={setMessage} /> : null}
                     </div>
-                    <div id="default-styled-tab-content">
-                        <div className={`p-4 rounded-lg bg-white ${activeTab === 'styled-overview' ? 'block' : 'hidden'
-                            }`} id="styled-overview" role="tabpanel" aria-labelledby="overview-tab">
-                            {slug ? <SequenceOverView id={slug} callStepApi={callStepApi} setStepCallApi={setStepCallApi} setMessage={setMessage} /> : null}
-                        </div>
-                        <div className={`p-4 rounded-lg bg-white ${activeTab === 'styled-insights' ? 'block' : 'hidden'
-                            }`} id="styled-insights" role="tabpanel" aria-labelledby="insights-tab">
-                            <p className="text-sm text-gray-500 dark:text-gray-400"> No records to show </p>
-                        </div>
-                        <div className={`p-4 rounded-lg bg-white ${activeTab === 'styled-settings' ? 'block' : 'hidden'
-                            }`} id="styled-settings" role="tabpanel" aria-labelledby="settings-tab">
-                            {slug ? <SequenceSetting id={slug} sequence={sequence} saveSettings={saveSettings} /> : null}
-                        </div>
-                        <div className={`p-4 rounded-lg bg-white ${activeTab === 'styled-prospects' ? 'block' : 'hidden'
-                            }`} id="styled-prospects" role="tabpanel" aria-labelledby="prospects-tab">
-                            {slug ? <SequenceProspects id={slug} prospects={prospects} setProspects={setProspects} assignedProspects={assignedProspects} setAssignedProspects={setAssignedProspects} setCallApi={setCallApi} callApi={callApi} setMessage={setMessage} /> : null}
-                        </div>
+                    <div className={`p-4 rounded-lg bg-white ${activeTab === 'styled-insights' ? 'block' : 'hidden'
+                        }`} id="styled-insights" role="tabpanel" aria-labelledby="insights-tab">
+                        <p className="text-sm text-gray-500 dark:text-gray-400"> No records to show </p>
+                    </div>
+                    <div className={`p-4 rounded-lg bg-white ${activeTab === 'styled-settings' ? 'block' : 'hidden'
+                        }`} id="styled-settings" role="tabpanel" aria-labelledby="settings-tab">
+                        {slug ? <SequenceSetting id={slug} sequence={sequence} saveSettings={saveSettings} /> : null}
+                    </div>
+                    <div className={`p-4 rounded-lg bg-white ${activeTab === 'styled-prospects' ? 'block' : 'hidden'
+                        }`} id="styled-prospects" role="tabpanel" aria-labelledby="prospects-tab">
+                        {slug ? <SequenceProspects id={slug} prospects={prospects} setProspects={setProspects} assignedProspects={assignedProspects} setAssignedProspects={setAssignedProspects} setCallApi={setCallApi} callApi={callApi} setMessage={setMessage} /> : null}
                     </div>
                 </div>
                 <EmailAppModal

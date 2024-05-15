@@ -35,9 +35,9 @@ export default function Sequences() {
                 if (res.status === 'success') {
                     console.log(res)
                     setMessage({ msg: 'Sequence created successfully!', type: 'success' });
-                    setTimeout(()=>{
-                      router.push({ pathname: `/sequences/view/${res?.data['insertId']}`, query: { status: 'success' } });
-                    },1000)
+                    setTimeout(() => {
+                        router.push({ pathname: `/sequences/view/${res?.data['insertId']}`, query: { status: 'success' } });
+                    }, 1000)
                 } else {
                     setMessage({ msg: 'Please fill all required fields', type: 'error' });
                 }
@@ -51,15 +51,13 @@ export default function Sequences() {
     return (
         <DefaultLayout>
             <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-                <div className="mx-auto max-w-270">
-                    <Breadcrumb pageName="Sequences" />
-                    <div className="flex flex-col-reverse justify-end gap-6 py-4.5 pl-4 pr-4 sm:flex-row lg:pl-10 lg:pr-7.5">
-                        <button className={`flex rounded-md bg-primary px-5.5 py-2.5 font-medium text-white`} onClick={() => { handleModal(true) }}>
-                            Create Sequence
-                        </button>
-                    </div>
-                    <TableSequence setMessage={setMessage} />
+                <Breadcrumb pageName="Sequences" />
+                <div className="flex flex-col-reverse justify-end gap-6 py-4.5 pl-4 pr-4 sm:flex-row lg:pl-10 lg:pr-7.5">
+                    <button className={`flex rounded-md bg-primary px-5.5 py-2.5 font-medium text-white`} onClick={() => { handleModal(true) }}>
+                        Create Sequence
+                    </button>
                 </div>
+                <TableSequence setMessage={setMessage} />
                 <EmailAppModal
                     isOpen={isModalOpen}
                     onClose={handleModal}
