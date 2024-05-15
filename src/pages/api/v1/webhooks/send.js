@@ -5,10 +5,10 @@ const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 587,
     secure: false, // Use `true` for port 465, `false` for all other ports
-    // auth: {
-    //     user: "devops.mailbox1@gmail.com",
-    //     pass: "imam spxl asji nahe",
-    // },
+    auth: {
+        user: "devops.mailbox1@gmail.com",
+        pass: "imam spxl asji nahe",
+    },
 });
 
 export default function handler(req, res) {
@@ -35,12 +35,10 @@ async function sendTestEmail(req, res) {
             html: html
         };
         transporter.sendMail(mailOptions, (error, info) => {
-            console.log(info)
             if (error) {
-                console.log(error)
                 res.status(200).json({ message: "Failed to send email" });
             } else {
-                res.status(200).json({ message: "Email sent successfully!" });
+                res.status(200).json({ name: "Email sent successfully!" });
             }
         });
 
