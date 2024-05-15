@@ -48,12 +48,20 @@ async function handlePostRequest(req, res) {
                 return;
             }
         });
-        const { id, name, options, mailbox } = req.body;
+        const { id, name, options, mailbox, replies, meetings } = req.body;
         let query = 'INSERT INTO sequences (name, sequence_type, from_email) VALUES (?, ?, ?)';
-        const values = [name, options, mailbox];
+        const values = [];
         if (id) {
-            query = `UPDATE sequences SET name = ?, sequence_type = ?, from_email = ? WHERE id = ?`;
+            query = `UPDATE sequences SET name = ?, from_email = ?, replies = ?, meetings = ? WHERE id = ?`;
+            values.push(name);
+            values.push(mailbox);
+            values.push(replies);
+            values.push(meetings);
             values.push(id);
+        } else {
+            values.push(name);
+            values.push(options);
+            values.push(mailbox);
         }
         connection.query(query, values, (err, results) => {
             if (err) {

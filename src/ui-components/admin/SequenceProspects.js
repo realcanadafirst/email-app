@@ -16,9 +16,10 @@ const SequenceProspects = ({ id, assignedProspects, setAssignedProspects, callAp
                 const prospects_t = res.data['prospects'];
                 const prospects_a = res.data['assigned_prospects'];
                 const assignedProspectsTemp = prospects_a.map(mainItem => {
-                    const pros_data = JSON.parse(mainItem.prospects)
-                    const foundItem = prospects_t.find(filterItem => filterItem.id === pros_data.value);
-                    return foundItem ? { ...foundItem, prospects_id: mainItem.id } : null;
+                    const pros_data = JSON.parse(mainItem.prospects);
+                    return {...pros_data, prospects_id: mainItem.id};
+                    // const foundItem = prospects_t.find(filterItem => filterItem.id === pros_data.value);
+                    // return foundItem ? { ...pros_data, prospects_id: mainItem.id } : null;
                 });
                 const options_t = prospects_t.filter(mainItem => !prospects_a.some(filterItem => {
                     const pros_data = JSON.parse(filterItem.prospects)
