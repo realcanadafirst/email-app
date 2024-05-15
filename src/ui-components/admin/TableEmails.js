@@ -34,7 +34,9 @@ const TableEmails = ({ emails }) => {
                                     <p>{sequence.subject}</p>
                                 </td>
                                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                                    <p className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium`}>0</p>
+                                    <p className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium`}>
+                                        { sequence?.prospects ? `${sequence.prospects.length}` : '0' }
+                                    </p>
                                 </td>
                                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                                     <p className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium`}>0</p>
@@ -53,9 +55,7 @@ const TableEmails = ({ emails }) => {
                         {(emails && emails.length < 1) &&
                             <tr>
                                 <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11 text-center" colSpan={6}>
-                                    <h5 className="font-medium text-black dark:text-white">
-                                        No Record Found
-                                    </h5>
+                                    <h5 className="font-medium text-black dark:text-white"> No Record Found </h5>
                                 </td>
                             </tr>
                         }
