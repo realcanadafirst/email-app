@@ -1,6 +1,11 @@
 import { format } from 'date-fns';
 const TableEmails = ({ emails }) => {
     const formatDateTime = (date) => format(date, 'MMMM d, yyyy');
+
+    const showCount = (data = [], type) => {
+        const datar = data.filter((val) => !(val[type] === '0' || val[type] === null));
+        return datar ? (type === 'email_sent' ? (data.length - datar.length) : datar.length) : 0;
+    }
     return (
         <div className="rounded-sm border border-stroke bg-white shadow-default rounded-[10px] dark:border-strokedark dark:bg-boxdark">
             <div className="max-w-full overflow-x-auto rounded-[10px]">
@@ -11,7 +16,10 @@ const TableEmails = ({ emails }) => {
                                 Name
                             </th>
                             <th className="min-w-[120px] px-4 py-4 font-medium text-white dark:text-white">
-                                Contacted
+                                Receivers
+                            </th>
+                            <th className="min-w-[150px] px-4 py-4 font-medium text-white dark:text-white">
+                                Failed
                             </th>
                             <th className="min-w-[150px] px-4 py-4 font-medium text-white dark:text-white">
                                 Opened
@@ -35,20 +43,23 @@ const TableEmails = ({ emails }) => {
                                 </td>
                                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                                     <p className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium`}>
-                                        { sequence?.prospects ? `${sequence.prospects.length}` : '0' }
+                                        {sequence?.prospects ? `${sequence.prospects.length}` : '0'}
                                     </p>
                                 </td>
                                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                                    <p className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium`}>0</p>
+                                    <p className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium`}>{showCount(sequence.prospects, 'email_sent')}</p>
                                 </td>
                                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                                    <p className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium`}>0</p>
+                                    <p className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium`}>{showCount(sequence.prospects, 'opened')}</p>
                                 </td>
                                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                                    <p className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium`}>0</p>
+                                    <p className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium`}>{showCount(sequence.prospects, 'clicked')}</p>
                                 </td>
                                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                                    <p className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium`}>{formatDateTime(sequence.created_at)}</p>
+                                    <p className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium`}>{showCount(sequence.prospects, 'replied')}</p>
+                                </td>
+                                <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                                    <p className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium`}> {sequence.created_at ? formatDateTime(sequence.created_at) : ''}</p>
                                 </td>
                             </tr>
                         ))}

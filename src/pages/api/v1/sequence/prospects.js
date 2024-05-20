@@ -1,5 +1,4 @@
-import { createConnection } from 'mysql2';
-const { promisify } = require('util');
+const mysql = require('mysql2/promise');
 
 export default function handler(req, res) {
     if (req.method === 'GET') {
@@ -16,15 +15,23 @@ export default function handler(req, res) {
     }
 }
 
+const createConnection = async () => {
+    return mysql.createConnection({
+        host: process.env.RDS_HOSTNAME,
+        user: process.env.RDS_USERNAME,
+        password: process.env.RDS_PASSWORD,
+        database: process.env.RDS_DATABASE
+    });
+};
+
 async function handleGetRequest(req, res) {
     try {
-        const connection = createConnection({ host: process.env.RDS_HOSTNAME, user: process.env.RDS_USERNAME, password: process.env.RDS_PASSWORD, database: process.env.RDS_DATABASE });
-        connection.connect((err) => {if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; }});
-        const query = promisify(connection.query).bind(connection);
+        const connection = await createConnection();
+        connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
         try {
             const c_id = req.query?.s_id ? req.query?.s_id : null;
-            const prospects = await query('SELECT * FROM `contacts`');
-            const assigned_prospects = await query(`SELECT * FROM sequence_prospects WHERE sequence_id = ${c_id}`);
+            const [prospects] = await connection.execute('SELECT * FROM `contacts`');
+            const [assigned_prospects] = await connection.execute(`SELECT * FROM sequence_prospects WHERE sequence_id = ${c_id}`);
             const data = {
                 'prospects': [],
                 'assigned_prospects': []
@@ -38,11 +45,11 @@ async function handleGetRequest(req, res) {
             res.status(200).json({ data: data });
             return;
         } catch (error) {
-            console.log(error)
             res.status(500).json({ error: 'Failed to get data from database.' });
             return;
+        } finally {
+            await connection.end();
         }
-        connection.end(); // Close the connection
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
     }
@@ -50,25 +57,34 @@ async function handleGetRequest(req, res) {
 
 async function handlePostRequest(req, res) {
     try {
-        const connection = createConnection({ host: process.env.RDS_HOSTNAME, user: process.env.RDS_USERNAME, password: process.env.RDS_PASSWORD, database: process.env.RDS_DATABASE });
-        connection.connect((err) => {
-            if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; }
-        });
-        const c_id = req.query?.s_id ? req.query?.s_id : null;
-        const { prospects } = req.body;
-        let query = 'INSERT INTO sequence_prospects (sequence_id, prospects, sequence_status)';
-        const data = [];
-        prospects.forEach(element => {
-            query = query + 'VALUES (?, ?, ?)';
-            data.push(c_id);
-            data.push(JSON.stringify(element));
-            data.push('0');
-        });
-        connection.query(query, data, (err, results) => {
-            if (err) {res.status(500).json({ error: 'Failed to insert data' });return;}
-            res.status(200).json({ data: results });
-        });
-        connection.end();
+        const connection = await createConnection();
+        connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
+        try {
+            const c_id = req.query?.s_id ? req.query?.s_id : null;
+            const { prospects } = req.body;
+            const query = 'INSERT INTO sequence_prospects (sequence_id, prospects, sequence_status) VALUES ?';
+            const data = [];
+            for (let i = 0; i < prospects.length; i++) {
+                const datat = [];
+                datat.push(c_id);
+                datat.push(JSON.stringify(prospects[i]));
+                datat.push('0');
+                data.push(datat);
+            }
+            try {
+                const [results] = await connection.query(query, [data]);
+                res.status(200).json({ data: results });
+            } catch (error) {
+                res.status(500).json({ error: 'Failed to insert data.' });
+            } finally {
+                await connection.end();
+            }
+        } catch (error) {
+            res.status(500).json({ error: 'Failed to insert data.' });
+            return;
+        } finally {
+            await connection.end();
+        }
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
     }
@@ -79,26 +95,23 @@ async function handlePutRequest(req, res) {
         const c_id = req.query?.c_id;
         const status = req.query?.status;
         if (c_id, status) {
-            const connection = createConnection({ host: process.env.RDS_HOSTNAME, user: process.env.RDS_USERNAME, password: process.env.RDS_PASSWORD, database: process.env.RDS_DATABASE });
+            const connection = await createConnection();
             connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
-            if (status == 3) {
-                const query = `DELETE FROM sequence_prospects WHERE id = ${c_id}`;
-                console.log(query)
-                connection.query(query, (err, results) => {
-                    if (err) { res.status(500).json({ error: 'Failed to delete data from database' }); return; }
+            try {
+                if (status == 3) {
+                    const query = `DELETE FROM sequence_prospects WHERE id = ${c_id}`;
+                    const [results] = await connection.execute(query);
                     res.status(200).json({ data: results });
-                });
-                connection.end();
-            } else {
-                const query = `UPDATE sequence_prospects SET sequence_status = ? WHERE id = ?`;
-                connection.query(query, [status, c_id], (err, results) => {
-                    if (err) {
-                        res.status(500).json({ error: 'Failed to get data from database' });
-                        return;
-                    }
+                } else {
+                    const query = `UPDATE sequence_prospects SET sequence_status = ? WHERE id = ?`;
+                    const [results] = await connection.execute(query);
                     res.status(200).json({ data: results });
-                });
-                connection.end();
+                }
+            } catch (error) {
+                res.status(500).json({ error: 'Failed to get data from database.' });
+                return;
+            } finally {
+                await connection.end();
             }
         } else {
             res.status(500).json({ error: 'Contact not found!' });
@@ -112,22 +125,18 @@ async function handleDeleteRequest(req, res) {
     try {
         const c_id = req.query?.c_id;
         if (c_id) {
-            const connection = createConnection({ host: process.env.RDS_HOSTNAME, user: process.env.RDS_USERNAME, password: process.env.RDS_PASSWORD, database: process.env.RDS_DATABASE });
-            connection.connect((err) => {
-                if (err) {
-                    res.status(500).json({ error: 'Failed to connect to database' });
-                    return;
-                }
-            });
+            const connection = await createConnection();
+            connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
             const query = `DELETE FROM contacts WHERE id = ${c_id}`;
-            connection.query(query, (err, results) => {
-                if (err) {
-                    res.status(500).json({ error: 'Failed to get data from database' });
-                    return;
-                }
+            try {
+                const [results] = await connection.execute(query);
                 res.status(200).json({ data: results });
-            });
-            connection.end();
+            } catch (error) {
+                res.status(500).json({ error: 'Failed to get data from database.' });
+                return;
+            } finally {
+                await connection.end();
+            }
         } else {
             res.status(500).json({ error: 'Contact not found!' });
         }

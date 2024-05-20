@@ -5,11 +5,10 @@ export default function handler(req, res) {
         handleGetRequest(req, res);
     } else if (req.method === 'POST') {
         const { actionType } = req.body;
-        console.log(actionType)
         if (actionType === 'test') {
             handleTestRequest(req, res);
         } else {
-            handleTestRequest(req, res);
+            handlePostRequest(req, res);
         }
     } else if (req.method === 'DELETE') {
         handleDeleteRequest(req, res);

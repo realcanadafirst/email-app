@@ -26,7 +26,7 @@ async function handleGetRequest(req, res) {
         const connection = await createConnection();
         connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
         try {
-            let query = `SELECT * FROM emails LEFT JOIN email_prospects ON emails.id = email_prospects.email_id`;
+            let query = `SELECT emails.id as id, emails.subject as subject, emails.template as template, emails.updated_at as updated_at, emails.created_at as created_at, emails.mail_from as mail_from, email_prospects.clicked as clicked, email_prospects.opened as opened, email_prospects.receiver_data as receiver_data, email_prospects.contacted as contacted, email_prospects.replied as replied, email_prospects.email_sent as email_sent, email_prospects.id as prospects_id, email_prospects.email_id as email_id FROM emails LEFT JOIN email_prospects ON emails.id = email_prospects.email_id order by id DESC`;
             const e_id = req.query?.e_id;
             if (e_id) {
                 query = query + `WHERE id = ${e_id}`;
@@ -37,7 +37,7 @@ async function handleGetRequest(req, res) {
             results.forEach(row => {
                 if (!prospects[row.email_id]) {
                     prospects[row.email_id] = {
-                        id: row.email_id,
+                        id: row.id,
                         subject: row.subject,
                         mail_from: row.mail_from,
                         template: row.template,
@@ -54,12 +54,12 @@ async function handleGetRequest(req, res) {
                         opened: row.opened,
                         receiver_data: row.receiver_data,
                         contacted: row.contacted,
+                        email_sent: row.email_sent,
                         replied: row.replied,
-                        updated_at: row.updated_at
                     });
                 }
             });
-            res.status(200).json({ data: emails, results: results });
+            res.status(200).json({ data: emails });
         } catch (error) {
             res.status(500).json({ error: 'Failed to get data BB' });
         } finally {
@@ -97,13 +97,11 @@ async function handlePostRequest(req, res) {
                 res.status(500).json({ error: 'Internal Server Error' });
             }
         } catch (error) {
-            console.log(error)
             res.status(500).json({ error: 'Failed to get data' });
         } finally {
             await connection.end();
         }
     } catch (error) {
-        console.log(error)
         res.status(500).json({ error: 'Internal Server Error' });
     }
 }
