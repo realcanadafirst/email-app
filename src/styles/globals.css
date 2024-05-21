@@ -87,3 +87,8 @@ body.admin {
 .react-datepicker__input-container .react-datepicker__calendar-icon{
   padding-top: 1rem;
 }
+.modal-width{
+  margin-left: 20%;
+  max-width: 65%;
+  max-height: 80vh;
+}

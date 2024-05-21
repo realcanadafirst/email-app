@@ -88,7 +88,7 @@ const SequenceStepList = ({ stepData, setStepCallApi, setMessage }) => {
                             <p className="text-sm"> Subject :<span className="text-sm"> {stepData.subject}</span></p>
                         </div>
                         <div className="flex flex-1 items-center justify-between py-2">
-                            <span className="text-xs">
+                            <span className="text-xs line-clamp-3">
                                 {removeTag(stepData.template)}
                             </span>
                         </div>

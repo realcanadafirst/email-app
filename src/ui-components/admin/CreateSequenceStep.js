@@ -32,7 +32,7 @@ const CreateSequenceStep = ({ formData, handleChange, isOptionSelected = false, 
                     </select>
                 </div>
                 {
-                    (sequence?.sequence_type === '0') ? <div className="mb-5.5">
+                    (sequence?.sequence_type === '1') ? <div className="mb-5.5">
                         <label className="mb-3 block text-sm font-medium text-black dark:text-white" htmlFor="intervalTime">Time Interval to Wait</label>
                         <div className="mb-5.5 flex flex-col gap-2.5 sm:flex-row">
                             <DatePicker startDate={formData.execution_date} setSequenceDate={setSequenceDate} />

@@ -3,7 +3,7 @@ const EmailAppModal = ({ isOpen, onClose, onConfirm, children, confirmMsg = 'Con
         <>
             {isOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 min-w-80 z-50">
-                    <div className="bg-white p-8 rounded-lg overflow-auto">
+                    <div className="bg-white p-8 rounded-lg overflow-auto ml-4 modal-width">
                         {children}
                         <div className="mt-8 flex justify-center">
                             <button className="mr-4 px-4 py-2 bg-red-500 text-white bg-[#F87171] rounded hover:bg-red-600" onClick={onConfirm}>{confirmMsg}</button>
