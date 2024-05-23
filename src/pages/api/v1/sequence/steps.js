@@ -1,4 +1,5 @@
-const mysql = require('mysql2/promise');
+import { createConnection } from '@ft/lib/dbconnection';
+import { sendEMail } from '@ft/lib/send';
 
 export default function handler(req, res) {
     if (req.method === 'GET') {
@@ -10,14 +11,7 @@ export default function handler(req, res) {
         res.status(405).end(`Method ${req.method} Not Allowed`);
     }
 }
-const createConnection = async () => {
-    return mysql.createConnection({
-        host: process.env.RDS_HOSTNAME,
-        user: process.env.RDS_USERNAME,
-        password: process.env.RDS_PASSWORD,
-        database: process.env.RDS_DATABASE
-    });
-};
+
 async function handleGetRequest(req, res) {
     try {
         const connection = await createConnection();
@@ -80,5 +74,48 @@ async function handlePostRequest(req, res) {
 }
 
 async function sendTestEmail(req, res) {
-
+    try {
+        const connection = await createConnection();
+        connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
+        try {
+            const [appData] = await connection.execute(`SELECT * FROM settings WHERE attribute IN ('host', 'port', 'email', 'stmp_pass', 'senderName')`);
+            if (appData) {
+                const smtpData = { secure: false, auth: {} };
+                let senderName = '';
+                appData.map((val) => {
+                    if (val.attribute === 'host') {
+                        smtpData.host = val.value
+                    } else if (val.attribute === 'port') {
+                        smtpData.port = val.value
+                    } else if (val.attribute === 'email') {
+                        smtpData.auth.user = val.value
+                    } else if (val.attribute === 'stmp_pass') {
+                        smtpData.auth.pass = val.value
+                    } else if (val.attribute === 'senderName') {
+                        senderName = val.value
+                    }
+                });
+                const step = req.query?.step ? req.query?.step : null;
+                const s_id = req.query?.s_id;
+                const [sequences] = await connection.execute(`SELECT * FROM sequences WHERE id = ${s_id}`);
+                const [steps] = await connection.execute(`SELECT * FROM sequence_steps WHERE id = ${step}`);
+                if (steps && sequences) {
+                    try {
+                        await sendEMail({ smtpData, emailData: steps[0], senderName, mail_from: sequences[0]['from_email'], receiver_data: sequences[0]['from_email'] });
+                        res.status(200).json({ message: 'email sent.' });
+                    } catch (error) {
+                        res.status(500).json({ error: 'Failed to send email' });
+                    }
+                }
+            } else {
+                res.status(500).json({ error: 'Failed to get settings data' });
+            }
+        } catch (error) {
+            res.status(500).json({ error: 'Failed to send email' });
+        } finally {
+            await connection.end();
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to send email' });
+    }
 }

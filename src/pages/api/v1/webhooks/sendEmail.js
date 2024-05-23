@@ -1,5 +1,5 @@
-const mysql = require('mysql2/promise');
-
+import { createConnection } from '@ft/lib/dbconnection';
+import { sendEMail } from '@ft/lib/send';
 export default function handler(req, res) {
     if (req.method === 'POST') {
         handlePostRequest(req, res);
@@ -8,15 +8,6 @@ export default function handler(req, res) {
         res.status(405).end(`Method ${req.method} Not Allowed`);
     }
 }
-
-const createConnection = async () => {
-    return mysql.createConnection({
-        host: process.env.RDS_HOSTNAME,
-        user: process.env.RDS_USERNAME,
-        password: process.env.RDS_PASSWORD,
-        database: process.env.RDS_DATABASE
-    });
-};
 
 async function handlePostRequest(req, res) {
     try {
@@ -46,14 +37,17 @@ async function handlePostRequest(req, res) {
                     if (prospects) {
                         for (let i = 0; i < prospects.length; i++) {
                             try {
-                                await sendEMail(smtpData, emailData[0], prospects[i], senderName);
+                                const receiver_data = JSON.parse(prospects[i]['receiver_data']);
+                                await sendEMail({ smtpData, emailData: emailData[0], senderName, mail_from: emailData[0]['mail_from'], receiver_data: receiver_data['label'] });
                                 let upquery = `UPDATE email_prospects SET message = ?, email_sent = ? WHERE id = ?`;
                                 await connection.execute(upquery, ['Email sent successfully', '1', prospects[i]['id']]);
                             } catch (error) {
+                                console.log(error)
+                                let upquery = `UPDATE email_prospects SET message = ?, email_sent = ? WHERE id = ?`;
                                 await connection.execute(upquery, ['Failed to send email', '0', prospects[i]['id']]);
                             }
                         }
-                        if(prospects.length < 10){
+                        if (prospects.length < 10) {
                             let upquery = `UPDATE emails SET email_sent = ? WHERE id = ?`;
                             await connection.execute(upquery, ['1', emailData[0]['id']]);
                         }
@@ -65,6 +59,7 @@ async function handlePostRequest(req, res) {
                 res.status(200).json({ error: 'Failed to get data' });
             }
         } catch (error) {
+            console.log(error)
             res.status(500).json({ error: 'Failed to get data' });
         } finally {
             await connection.end();

@@ -1,4 +1,4 @@
-const mysql = require('mysql2/promise');
+import { createConnection } from '@ft/lib/dbconnection';
 
 export default function handler(req, res) {
     if (req.method === 'GET') {
@@ -14,15 +14,6 @@ export default function handler(req, res) {
         res.status(405).end(`Method ${req.method} Not Allowed`);
     }
 }
-
-const createConnection = async () => {
-    return mysql.createConnection({
-        host: process.env.RDS_HOSTNAME,
-        user: process.env.RDS_USERNAME,
-        password: process.env.RDS_PASSWORD,
-        database: process.env.RDS_DATABASE
-    });
-};
 
 async function handleGetRequest(req, res) {
     try {
@@ -104,7 +95,7 @@ async function handlePutRequest(req, res) {
                     res.status(200).json({ data: results });
                 } else {
                     const query = `UPDATE sequence_prospects SET sequence_status = ? WHERE id = ?`;
-                    const [results] = await connection.execute(query);
+                    const [results] = await connection.execute(query, [status, c_id]);
                     res.status(200).json({ data: results });
                 }
             } catch (error) {

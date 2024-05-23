@@ -1,4 +1,4 @@
-const mysql = require('mysql2/promise');
+import { createConnection } from '@ft/lib/dbconnection';
 export default function handler(req, res) {
     if (req.method === 'GET') {
         handleGetRequest(req, res);
@@ -10,17 +10,7 @@ export default function handler(req, res) {
     }
 }
 
-const createConnection = async () => {
-    return mysql.createConnection({
-        host: process.env.RDS_HOSTNAME,
-        user: process.env.RDS_USERNAME,
-        password: process.env.RDS_PASSWORD,
-        database: process.env.RDS_DATABASE
-    });
-};
-
 async function handleGetRequest(req, res) {
-
     try {
         const connection = await createConnection();
         connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });

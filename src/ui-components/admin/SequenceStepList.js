@@ -36,15 +36,23 @@ const SequenceStepList = ({ stepData, setStepCallApi, setMessage }) => {
             setMessage({ msg: '', type: '' });
             let url = `/api/v1/sequence/steps?step=${stepData.id}`;
             if(sendTestEmailStatus){
-                url = `/api/v1/webhooks/send?test=true`;
+                url = `/api/v1/sequence/steps?s_id=${stepData.sequence_id}&step=${stepData.id}&test=true`;
             }
             fetchData(url, 'POST', postData).then((res) => {
                 if (res.status === 'success') {
                     setIsModalOpen(false);
                     setStepCallApi(true);
-                    setMessage({ msg: 'Sequence step updated successfully!', type: 'success' });
+                    if(sendTestEmailStatus){
+                        setMessage({ msg: 'Email sent successfully!', type: 'success' });
+                    } else {
+                        setMessage({ msg: 'Sequence step updated successfully!', type: 'success' });
+                    }
                 } else {
-                    setMessage({ msg: 'Please fill all required fields', type: 'error' });
+                    if(sendTestEmailStatus){
+                        setMessage({ msg: 'Unable to send email!', type: 'error' });
+                    } else {
+                        setMessage({ msg: 'Unable to updated sequence!', type: 'error' });
+                    }
                 }
             });
         } else {

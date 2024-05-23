@@ -17,7 +17,7 @@ const SequenceProspects = ({ id, assignedProspects, setAssignedProspects, callAp
                 const prospects_a = res.data['assigned_prospects'];
                 const assignedProspectsTemp = prospects_a.map(mainItem => {
                     const pros_data = JSON.parse(mainItem.prospects);
-                    return {...pros_data, prospects_id: mainItem.id, id:mainItem.id, sequence_id:mainItem.sequence_id};
+                    return {...pros_data, prospects_id: mainItem.id, id:mainItem.id, sequence_id:mainItem.sequence_id, sequence_status: mainItem.sequence_status};
                 });
                 const options_t = prospects_t.filter(mainItem => !prospects_a.some(filterItem => {
                     const pros_data = JSON.parse(filterItem.prospects)
@@ -76,8 +76,8 @@ const SequenceProspects = ({ id, assignedProspects, setAssignedProspects, callAp
                             </p>
                         </td>
                         <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                            <p className="text-black dark:text-white">
-                                -
+                            <p className="rounded-full border border-[#3BA2B8] px-3 py-1 text-sm font-medium text-[#3BA2B8] hover:opacity-80 w-max-content">
+                                {contact.sequence_status === '0' ? 'Opted In' : (contact.sequence_status === '1' ? 'Approaching' : 'Finished')}
                             </p>
                         </td>
                         <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
