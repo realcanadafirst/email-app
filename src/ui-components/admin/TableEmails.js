@@ -1,10 +1,14 @@
 import { format } from 'date-fns';
+import { useRouter } from "next/router";
 const TableEmails = ({ emails }) => {
     const formatDateTime = (date) => format(date, 'MMMM d, yyyy');
-
+    const router = useRouter();
     const showCount = (data = [], type) => {
         const datar = data.filter((val) => !(val[type] === '0' || val[type] === null));
         return datar ? (type === 'email_sent' ? (data.length - datar.length) : datar.length) : 0;
+    }
+    const viewEmail = (id) => {
+        router.push({ pathname: `/email/view/${id}` });
     }
     return (
         <div className="rounded-sm border border-stroke bg-white shadow-default rounded-[10px] dark:border-strokedark dark:bg-boxdark">
@@ -37,7 +41,7 @@ const TableEmails = ({ emails }) => {
                     </thead>
                     <tbody>
                         {emails && emails.map((sequence, key) => (
-                            <tr key={key}>
+                            <tr key={key} onClick={() => viewEmail(sequence.id)} className="cursor-pointer">
                                 <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
                                     <p>{sequence.subject}</p>
                                 </td>
