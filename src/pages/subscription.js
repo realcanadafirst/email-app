@@ -223,8 +223,8 @@ export default function Subscription() {
                             <circle cx="75" cy="50" r="138" fill="url(#paint0_linear)"></circle>
                             <defs>
                                 <linearGradient id="paint0_linear" x1="75" y1="-88" x2="75" y2="188" gradientUnits="userSpaceOnUse">
-                                    <stop stop-color="#3056D3" stopOpacity="0.15"></stop>
-                                    <stop offset="1" stop-color="#C4C4C4" stopOpacity="0"></stop>
+                                    <stop stopColor="#3056D3" stopOpacity="0.15"></stop>
+                                    <stop offset="1" stopColor="#C4C4C4" stopOpacity="0"></stop>
                                 </linearGradient>
                             </defs>
                         </svg>
