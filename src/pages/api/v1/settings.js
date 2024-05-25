@@ -23,6 +23,7 @@ async function handleGetRequest(req, res) {
             await connection.end();
         }
     } catch (error) {
+        console.log(error)
         res.status(500).json({ error: 'Internal Server Error' });
     }
 }
