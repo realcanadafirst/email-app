@@ -46,10 +46,6 @@ async function handlePostRequest(req, res) {
             if(email && password){
                 let query = `SELECT * FROM users WHERE email = '${email}' AND password = '${password}'`
                 const [results] = await connection.execute(query);
-                // var current_date = (new Date()).valueOf().toString();
-                // var random = Math.random().toString();
-                // const a = createHash('sha256').update(random + current_date).digest('hex').substring(0, 20);
-                // console.log(a)
                 if(results && results.length){
                     const userdata = results[0];
                     var current_date = (new Date()).valueOf().toString();
