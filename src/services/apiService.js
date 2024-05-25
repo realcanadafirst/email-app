@@ -6,6 +6,14 @@ export async function fetchData(url, method = 'GET', postData = {}, formData = f
         } else{
             requestOptions.headers = { 'Content-Type': 'application/json'};
         }
+        if (typeof window === 'undefined') {
+            let userdata = localStorage.getItem('userdata');
+            if(userdata){
+                userdata = JSON.parse(userdata);
+                requestOptions.headers['access-token'] = userdata['access_token'];
+                requestOptions.headers['userhash'] = userdata['userhash'];
+            }
+        }
         requestOptions.method = method;
         if (method === 'POST') {
             if (formData) {

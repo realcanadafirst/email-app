@@ -21,7 +21,7 @@ export default function Login() {
     const handleLogin = () => {
         if (formData.email && formData.email !== '' && formData.password && formData.password !== '') {
             setMessage({ msg: '', type: '' });
-            fetchData('/api/v1/auth', 'POST', formData).then((res) => {
+            fetchData('/api/auth', 'POST', formData).then((res) => {
                 if (res.status === 'success') {
                     localStorage.setItem('userData', JSON.stringify(res.data));
                     router.push('/dashboard')

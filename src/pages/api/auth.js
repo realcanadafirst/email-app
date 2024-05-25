@@ -1,4 +1,5 @@
 import { createConnection } from '@ft/lib/dbconnection';
+const { createHash } = require('crypto');
 
 export default function handler(req, res) {
     if (req.method === 'GET') {
@@ -10,6 +11,7 @@ export default function handler(req, res) {
         res.status(405).end(`Method ${req.method} Not Allowed`);
     }
 }
+
 async function handleGetRequest(req, res) {
     try {
         const connection = await createConnection();
@@ -44,7 +46,14 @@ async function handlePostRequest(req, res) {
             if(email && password){
                 let query = `SELECT * FROM users WHERE email = '${email}' AND password = '${password}'`
                 const [results] = await connection.execute(query);
+                var current_date = (new Date()).valueOf().toString();
+                var random = Math.random().toString();
+                const a = createHash('sha256').update(random+ current_date).digest('hex').substring(0, 20);
+                console.log(a)
                 if(results && results.length){
+                //     let query = `SELECT * FROM users WHERE email = '${email}' AND password = '${password}'`
+                // const [results] = await connection.execute(query);
+
                     res.status(200).json({ data: results[0] });
                 } else {
                     res.status(401).json({ error: 'Please provide valid credentials' });
