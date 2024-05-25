@@ -54,6 +54,7 @@ export default function SequenceUpdate() {
             if (res.status === 'success' && res?.data?.length) {
                 setSequence(res.data[0]);
             } else {
+                setSequence([]);
                 setMessage({ msg: 'Failed to get prospects please try again', type: 'error' });
             }
         });

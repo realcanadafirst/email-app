@@ -15,6 +15,7 @@ const TableFeature = () => {
             if (res.status === 'success') {
                 seFeatures(res.data)
             } else {
+                seFeatures([]);
                 setMessage({ msg: 'Failed to get features please try again', type: 'error' });
             }
         });

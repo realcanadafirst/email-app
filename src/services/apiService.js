@@ -4,7 +4,7 @@ export async function fetchData(url, method = 'GET', postData = {}, formData = f
         if (formData) {
            // requestOptions.headers = { 'Content-Type': 'multipart/form-data' };
         } else{
-            requestOptions.headers = { 'Content-Type': 'application/json' };
+            requestOptions.headers = { 'Content-Type': 'application/json'};
         }
         requestOptions.method = method;
         if (method === 'POST') {

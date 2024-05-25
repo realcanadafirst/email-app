@@ -15,6 +15,7 @@ const TableProspects = ({ setMessage }) => {
       if (res.status === 'success') {
         setProspects(res.data)
       } else {
+        setProspects([]);
         setMessage({ msg: 'Failed to get prospects please try again', type: 'error' });
       }
     });

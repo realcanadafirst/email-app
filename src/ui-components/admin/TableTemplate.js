@@ -18,6 +18,7 @@ const TableTemplate = ({ setMessage }) => {
       if (res.status === 'success') {
         setTemplates(res.data)
       } else {
+        setTemplates([]);
         setMessage({ msg: 'Failed to get templates please try again', type: 'error' });
       }
     });

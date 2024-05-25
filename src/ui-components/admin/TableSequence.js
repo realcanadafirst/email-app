@@ -14,6 +14,7 @@ const TableSequence = ({ setMessage }) => {
       if (res.status === 'success') {
         setSequences(res.data)
       } else {
+        setSequences([]);
         setMessage({ msg: 'Failed to get sequences please try again', type: 'error' });
       }
     });
