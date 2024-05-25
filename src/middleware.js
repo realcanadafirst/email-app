@@ -14,7 +14,7 @@ export function middleware(req) {
                 return new NextResponse('Unauthorized', { status: 401 });
             }
         } else {
-            return new NextResponse('Unauthorized', { status: 403 });
+            return new NextResponse('Unauthorized', { status: 401 });
         }
     }
     return response;

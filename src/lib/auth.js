@@ -14,8 +14,6 @@ export async function handleGetRequest(req, res) {
                 res.status(401).json({ error: 'Please provide valid credentials' });
             }
         } catch (error) {
-            console.log('error')
-            console.log(error)
             res.status(500).json({ error: 'Failed to get data from database.' });
         } finally {
             await connection.end();
