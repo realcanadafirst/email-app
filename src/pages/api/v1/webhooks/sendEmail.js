@@ -42,7 +42,6 @@ async function handlePostRequest(req, res) {
                                 let upquery = `UPDATE email_prospects SET message = ?, email_sent = ? WHERE id = ?`;
                                 await connection.execute(upquery, ['Email sent successfully', '1', prospects[i]['id']]);
                             } catch (error) {
-                                console.log(error)
                                 let upquery = `UPDATE email_prospects SET message = ?, email_sent = ? WHERE id = ?`;
                                 await connection.execute(upquery, ['Failed to send email', '0', prospects[i]['id']]);
                             }
@@ -59,7 +58,6 @@ async function handlePostRequest(req, res) {
                 res.status(200).json({ error: 'Failed to get data' });
             }
         } catch (error) {
-            console.log(error)
             res.status(500).json({ error: 'Failed to get data' });
         } finally {
             await connection.end();

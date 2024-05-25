@@ -17,11 +17,13 @@ async function handleGetRequest(req, res) {
         const connection = await createConnection();
         connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
         try {
-            let query = 'SELECT * FROM `templates` order by id DESC LIMIT 50';
+            const user_hash = req.headers['user_hash'];
+            let query = `SELECT * FROM templates WHERE user_hash = '${user_hash}'`;
             const t_id = req.query?.t_id;
             if (t_id) {
-                query = query + `WHERE id = ${t_id}`;
+                query = query + ` AND id = ${t_id}`;
             }
+            query = query + ` order by id DESC LIMIT 50`;
             const [results] = await connection.execute(query);
             res.status(200).json({ data: results });
             return;
@@ -42,11 +44,12 @@ async function handlePostRequest(req, res) {
         connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
         try {
             const { id, subject, template } = req.body;
-            let query = 'INSERT INTO templates (subject, template) VALUES (?, ?)';
-            const values = [subject, template];
+            const user_hash = req.headers['user_hash'];
+            let query = 'INSERT INTO templates (user_hash, subject, template) VALUES (?, ?, ?)';
+            let values = [user_hash, subject, template];
             if (id) {
                 query = `UPDATE templates SET subject = ?, template = ? WHERE id = ?`;
-                values.push(id);
+                values = [subject, template, id];
             }
             const [results] = await connection.execute(query, values);
             res.status(200).json({ data: results });

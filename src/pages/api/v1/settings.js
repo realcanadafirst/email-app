@@ -15,7 +15,8 @@ async function handleGetRequest(req, res) {
         const connection = await createConnection();
         connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
         try {
-            const [results] = await connection.execute('SELECT * FROM `settings`');
+            const user_hash = req.headers['user_hash'];
+            const [results] = await connection.execute(`SELECT * FROM settings WHERE user_hash = '${user_hash}'`);
             res.status(200).json({ data: results });
         } catch (error) {
             res.status(500).json({ error: 'Failed to get data from database.' });
@@ -23,7 +24,6 @@ async function handleGetRequest(req, res) {
             await connection.end();
         }
     } catch (error) {
-        console.log(error)
         res.status(500).json({ error: 'Internal Server Error' });
     }
 }
@@ -34,13 +34,14 @@ async function handlePostRequest(req, res) {
         connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
         try {
             const body = req.body;
+            const user_hash = req.headers['user_hash'];
             let query = 'UPDATE settings SET value = CASE attribute ';
             body.forEach(update => {
                 query += `WHEN '${update.attribute}' THEN '${update.value}' `;
             });
-            query += 'END WHERE attribute IN (';
+            query += `END WHERE attribute IN (`;
             query += body.map(update => `'${update.attribute}'`).join(', ');
-            query += ')';
+            query += `) AND user_hash = '${user_hash}'`;
             const [results] = await connection.execute(query);
             res.status(200).json({ data: results });
         } catch (error) {

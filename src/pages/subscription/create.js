@@ -33,7 +33,6 @@ export default function Subscription() {
             setMessage({ msg: '', type: '' });
             fetchData('/api/v1/sequences', 'POST', postData).then((res) => {
                 if (res.status === 'success') {
-                    console.log(res)
                     setMessage({ msg: 'Sequence created successfully!', type: 'success' });
                     setTimeout(() => {
                         router.push({ pathname: `/sequences/view/${res?.data['insertId']}`, query: { status: 'success' } });

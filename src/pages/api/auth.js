@@ -26,8 +26,6 @@ async function handleGetRequest(req, res) {
                 res.status(401).json({ error: 'Please provide valid credentials' });
             }
         } catch (error) {
-            console.log('error')
-            console.log(error)
             res.status(500).json({ error: 'Failed to get data from database.' });
         } finally {
             await connection.end();
@@ -54,9 +52,9 @@ async function handlePostRequest(req, res) {
                     const values = [userdata['userhash'], token, token];
                     const [emailData] = await connection.execute(query, values);
                     if(emailData){
-                        res.setHeader('userhash', userdata['userhash'],);
+                        res.setHeader('user_hash', userdata['userhash'],);
                         res.setHeader('access_token', token);
-                        res.status(200).json({ data: {userhash: userdata['userhash'], name: userdata['name'], email: userdata['email'], type: userdata['type']}});
+                        res.status(200).json({ data: {user_hash: userdata['userhash'], name: userdata['name'], email: userdata['email'], type: userdata['type']}});
                     }
                     res.status(500).json({ error: 'Something went wrong, Please try again.' });
                 } else {

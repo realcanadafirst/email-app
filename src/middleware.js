@@ -6,7 +6,7 @@ export async function middleware(req) {
     const response = NextResponse.next();
     if (pathname.startsWith('/api/v1')) {
         const access_token = req.headers.get('access_token');
-        const user_hash = req.headers.get('userhash');
+        const user_hash = req.headers.get('user_hash');
         if (access_token && user_hash) {
             const valid_token = await fetch(`${req.nextUrl.origin}/api/auth/verify`, { headers: { access_token, user_hash } });
             if (!valid_token.ok) {

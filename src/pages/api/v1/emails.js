@@ -18,10 +18,12 @@ async function handleGetRequest(req, res) {
         const connection = await createConnection();
         connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
         try {
+            const user_hash = req.headers['user_hash'];
             let query = `SELECT emails.id as id, emails.subject as subject, emails.template as template, emails.updated_at as updated_at, emails.created_at as created_at, emails.mail_from as mail_from, email_prospects.clicked as clicked, email_prospects.opened as opened, email_prospects.receiver_data as receiver_data, email_prospects.contacted as contacted, email_prospects.replied as replied, email_prospects.email_sent as email_sent, email_prospects.id as prospects_id, email_prospects.email_id as email_id FROM emails LEFT JOIN email_prospects ON emails.id = email_prospects.email_id`;
             const e_id = req.query?.e_id;
+            query = query + ` WHERE emails.user_hash = '${user_hash}'`;
             if (e_id) {
-                query = query + ` WHERE emails.id = ${e_id}`;
+                query = query + ` AND emails.id = ${e_id}`;
             }
             query = query + ` order by id DESC`;
             const [results] = await connection.execute(query);
@@ -54,7 +56,6 @@ async function handleGetRequest(req, res) {
             });
             res.status(200).json({ data: emails });
         } catch (error) {
-            console.log(error)
             res.status(500).json({ error: 'Failed to get data BB' });
         } finally {
             await connection.end();
@@ -69,9 +70,10 @@ async function handlePostRequest(req, res) {
         const connection = await createConnection();
         connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
         try {
+            const user_hash = req.headers['user_hash'];
             const { id, mail_from, receivers, subject, template } = req.body;
-            let query = 'INSERT INTO emails (mail_from, subject, template) VALUES (?, ?, ?)';
-            const values = [mail_from, subject, template];
+            let query = 'INSERT INTO emails (user_hash, mail_from, subject, template) VALUES (?, ?, ?, ?)';
+            const values = [user_hash, mail_from, subject, template];
             if (id) {
                 query = `UPDATE emails SET mail_from = ?, subject = ?, template = ? WHERE id = ?`;
                 values.push(id);
@@ -111,7 +113,6 @@ async function handleDeleteRequest(req, res) {
                 const [results] = await connection.execute(query);
                 res.status(200).json({ data: results });
             } catch (error) {
-                console.log(error)
                 res.status(500).json({ error: 'Failed to get data BB' });
             } finally {
                 await connection.end();

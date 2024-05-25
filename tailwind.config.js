@@ -157,9 +157,7 @@ module.exports = {
         230: "57.5rem",
         242.5: "60.625rem",
       },
-      width: {
-        'max-content': 'max-content',
-      },
+    
       maxWidth: {
         2.5: "0.625rem",
         3: "0.75rem",

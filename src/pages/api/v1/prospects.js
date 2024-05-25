@@ -23,7 +23,9 @@ async function handleGetRequest(req, res) {
         const connection = await createConnection();
         connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
         try {
-            const [prospects] = await connection.execute('SELECT * FROM `contacts` order by id DESC LIMIT 50');
+            const user_hash = req.headers['user_hash'];
+            const query = `SELECT * FROM contacts WHERE user_hash = '${user_hash}' order by id DESC LIMIT 25`;
+            const [prospects] = await connection.execute(query);
             res.status(200).json({ data: prospects });
             return;
         } catch (error) {
@@ -67,8 +69,9 @@ async function handlePostRequest(req, res) {
         connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
         try {
             const { firstName, lastName, email, phoneNumber, organization_name } = req.body;
-            const query = 'INSERT INTO Contacts (firstName, lastName, email, phoneNumber, organization_name) VALUES (?, ?, ?, ?, ?)';
-            const [results] = await connection.execute(query, [firstName, lastName, email, phoneNumber, organization_name]);
+            const user_hash = req.headers['user_hash'];
+            const query = 'INSERT INTO Contacts (user_hash, firstName, lastName, email, phoneNumber, organization_name) VALUES (?, ?, ?, ?, ?, ?)';
+            const [results] = await connection.execute(query, [user_hash, firstName, lastName, email, phoneNumber, organization_name]);
             res.status(200).json({ data: results });
         } catch (error) {
             res.status(500).json({ error: 'Failed to insert data in database.' });
@@ -84,10 +87,12 @@ async function handleTestRequest(req, res) {
     try {
         const connection = await createConnection();
         connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
-        let query = `INSERT INTO Contacts (firstName, lastName, email, phoneNumber, organization_name) VALUES (?, ?, ?, ?, ?)`;
+        const user_hash = req.headers['user_hash'];
+        let query = `INSERT INTO Contacts (user_hash, firstName, lastName, email, phoneNumber, organization_name) VALUES (?, ?, ?, ?, ?, ?)`;
         try {
             for (let i = 1; i < 300; i++) {
                 const datat = [];
+                datat.push(`${user_hash}`);
                 datat.push('email-app');
                 datat.push('test-' + i);
                 datat.push('email-app-test-' + i + '@yopmail.com');

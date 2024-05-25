@@ -6,7 +6,6 @@ export async function validateToken({ user_hash, access_token }) {
         try {
             if (user_hash && access_token) {
                 const query = `SELECT * FROM login_attempts WHERE user_hash = ${user_hash} AND access_token = ${access_token}`;
-                console.log(query)
                 const [results] = await connection.execute(query);
                 if (results && results.length) {
                     return true;
@@ -22,7 +21,6 @@ export async function validateToken({ user_hash, access_token }) {
             await connection.end();
         }
     } catch (error) {
-        console.log(error)
         return false;
     }
 }

@@ -56,7 +56,6 @@ export default function ComposeEmail() {
             setMessage({ msg: '', type: '' });
             fetchData('/api/v1/emails', 'POST', postData).then((res) => {
                 if (res.status === 'success') {
-                    console.log(res)
                     setMessage({ msg: 'Email created successfully!', type: 'success' });
                     setTimeout(() => {
                         router.push({ pathname: `/email`, query: { status: 'success' } });

@@ -39,7 +39,7 @@ const AppSetting = () => {
     }
     return (
         <>
-            <div className="p-6.5 min-w-80 min-w-52">
+            <div className="min-w-80 lg:min-w-52">
                 {message.msg ? <Alert message={message} setMessage={setMessage} /> : null}
 
                 {
@@ -65,10 +65,12 @@ const AppSetting = () => {
                     </> : null
                 }
 
-                {settingData ? <div className="flex justify-end gap-4.5">
-                    <button className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90" onClick={() => { saveSettings(formData) }}>
-                        Save
-                    </button>
+                {settingData ? <div className="flex justify-center gap-4.5">
+                    <div className="w-full sm:w-1/2">
+                        <button className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90" onClick={() => { saveSettings(formData) }}>
+                            Save
+                        </button>
+                    </div>
                 </div> : null}
             </div>
         </>

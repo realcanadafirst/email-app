@@ -8,10 +8,10 @@ export async function fetchData(url, method = 'GET', postData = {}, formData = f
         }
         if (typeof window !== 'undefined') {
             let access_token = localStorage.getItem('access_token');
-            let userhash = localStorage.getItem('userhash');
-            if (access_token && userhash) {
+            let user_hash = localStorage.getItem('user_hash');
+            if (access_token && user_hash) {
                 requestOptions.headers['access_token'] = JSON.parse(access_token);
-                requestOptions.headers['userhash'] = JSON.parse(userhash);
+                requestOptions.headers['user_hash'] = JSON.parse(user_hash);
             }
         }
         requestOptions.method = method;
@@ -31,9 +31,9 @@ export async function fetchData(url, method = 'GET', postData = {}, formData = f
                 return { status: 'failed', data: null };
             }
         }
-        if (response.headers.get('access_token') && response.headers.get('userhash') && typeof window !== 'undefined') {
+        if (response.headers.get('access_token') && response.headers.get('user_hash') && typeof window !== 'undefined') {
             localStorage.setItem('access_token', JSON.stringify(response.headers.get('access_token')))
-            localStorage.setItem('userhash', JSON.stringify(response.headers.get('userhash')))
+            localStorage.setItem('user_hash', JSON.stringify(response.headers.get('user_hash')))
         }
         const data = await response.json();
         return { status: 'success', data: data?.data ? data.data : [] };

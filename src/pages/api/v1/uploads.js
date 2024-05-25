@@ -52,8 +52,6 @@ async function handlePostRequest(req, res) {
                     }
                     res.status(200).json({ data: totalrecords, message: `Out of ${totalrecords} Records ${totalrecords - failed} Records uploaded successfully` });
                 } catch (error) {
-                    console.log(error)
-
                     res.status(500).json({ error: 'Failed to insert data in database.' });
                 } finally {
                     await connection.end();
