@@ -1,10 +1,9 @@
 export async function fetchData(url, method = 'GET', postData = {}, formData = false) {
     try {
         const requestOptions = {};
-        if (formData) {
-            // requestOptions.headers = { 'Content-Type': 'multipart/form-data' };
-        } else {
-            requestOptions.headers = { 'Content-Type': 'application/json' };
+        requestOptions.headers = {};
+        if (!formData) {
+            requestOptions.headers['Content-Type'] = 'application/json';
         }
         if (typeof window !== 'undefined') {
             let access_token = localStorage.getItem('access_token');

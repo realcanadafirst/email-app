@@ -70,7 +70,7 @@ async function handlePostRequest(req, res) {
         try {
             const { firstName, lastName, email, phoneNumber, organization_name } = req.body;
             const user_hash = req.headers['user_hash'];
-            const query = 'INSERT INTO Contacts (user_hash, firstName, lastName, email, phoneNumber, organization_name) VALUES (?, ?, ?, ?, ?, ?)';
+            const query = 'INSERT INTO contacts (user_hash, firstName, lastName, email, phoneNumber, organization_name) VALUES (?, ?, ?, ?, ?, ?)';
             const [results] = await connection.execute(query, [user_hash, firstName, lastName, email, phoneNumber, organization_name]);
             res.status(200).json({ data: results });
         } catch (error) {

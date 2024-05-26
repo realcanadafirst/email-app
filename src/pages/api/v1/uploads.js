@@ -36,13 +36,14 @@ async function handlePostRequest(req, res) {
                 let failed = 0;
                 let totalrecords = 0;
                 try {
+                    const user_hash = req.headers['user_hash'];
                     for (let index = 0; index < data.length; index++) {
                         const element = data[index];
                         if (index > 0 && (element[0] !== undefined || element[1] !== undefined || element[2] !== undefined || element[3] !== undefined)) {
                             totalrecords++;
                             try {
-                                const query = 'INSERT INTO Contacts (firstName, lastName, email, phoneNumber, organization_name) VALUES (?, ?, ?, ?, ?)';
-                                await connection.execute(query, [element[0], element[1], element[2], element[3], element[4]]);
+                                const query = 'INSERT INTO contacts (user_hash, firstName, lastName, email, phoneNumber, organization_name) VALUES (?, ?, ?, ?, ?, ?)';
+                                await connection.execute(query, [user_hash, element[0], element[1], element[2], element[3], element[4]]);
                             } catch (error) {
                                 const query = 'INSERT INTO error_log (message) VALUES (?)';
                                 await connection.execute(query, [error.sqlMessage]);
