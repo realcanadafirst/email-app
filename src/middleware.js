@@ -1,6 +1,4 @@
 import { NextResponse } from 'next/server';
-import { validateToken } from '@ft/lib/authToken';
-
 export async function middleware(req) {
     const { pathname } = req.nextUrl;
     const response = NextResponse.next();

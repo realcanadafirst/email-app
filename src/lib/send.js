@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = 'https://email-app-advaita.azurewebsites.net/';
 
 export async function sendEMail({ smtpData, emailData, trackingUrl, firstName = '', senderName = '', mail_from, receiver_data }) {
     const transporter = nodemailer.createTransport(smtpData);
