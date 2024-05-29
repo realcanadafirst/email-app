@@ -72,10 +72,13 @@ async function handlePostRequest(req, res) {
         try {
             const user_hash = req.headers['user_hash'];
             const { id, mail_from, receivers, subject, template } = req.body;
-            let query = 'INSERT INTO emails (user_hash, mail_from, subject, template) VALUES (?, ?, ?, ?)';
-            const values = [user_hash, mail_from, subject, template];
+            const currentTime = new Date().getTime();
+            //const updatedTime = new Date(currentTime + 19800000);
+            const updatedTime = new Date(currentTime);
+            let query = 'INSERT INTO emails (user_hash, mail_from, subject, template, created_at) VALUES (?, ?, ?, ?, ?)';
+            const values = [user_hash, mail_from, subject, template, updatedTime];
             if (id) {
-                query = `UPDATE emails SET mail_from = ?, subject = ?, template = ? WHERE id = ?`;
+                query = `UPDATE emails SET mail_from = ?, subject = ?, template = ?, created_at = ? WHERE id = ?`;
                 values.push(id);
             }
             const [emailData] = await connection.execute(query, values);

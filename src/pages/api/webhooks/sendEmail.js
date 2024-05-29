@@ -1,5 +1,6 @@
 import { createConnection } from '@ft/lib/dbconnection';
 import { sendEMail } from '@ft/lib/send';
+import { format } from 'date-fns';
 export default function handler(req, res) {
     if (req.method === 'POST') {
         handlePostRequest(req, res);
@@ -14,7 +15,9 @@ async function handlePostRequest(req, res) {
         const connection = await createConnection();
         connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
         try {
-            const [emailData] = await connection.execute(`SELECT * FROM emails WHERE created_at < NOW() AND email_sent != '1' LIMIT 1`);
+            const currentTime = new Date();
+            const updatedTime = format(currentTime, 'yyyy-MM-dd HH:MM:SS');
+            const [emailData] = await connection.execute(`SELECT * FROM emails WHERE created_at < ${updatedTime} AND email_sent != '1' LIMIT 1`);
             if (emailData && emailData.length) {
                 const [appData] = await connection.execute(`SELECT * FROM settings WHERE attribute IN ('host', 'port', 'email', 'stmp_pass', 'senderName')`);
                 if (appData) {
@@ -55,10 +58,10 @@ async function handlePostRequest(req, res) {
                 }
                 res.status(200).json({ error: 'Failed to get settings data' });
             } else {
-                res.status(200).json({ error: 'Failed to get data' });
+                res.status(200).json({ error: 'Failed to get data.' });
             }
         } catch (error) {
-            res.status(500).json({ error: 'Failed to get data' });
+            res.status(500).json({ error: 'Failed to get data.' });
         } finally {
             await connection.end();
         }

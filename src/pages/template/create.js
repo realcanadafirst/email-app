@@ -74,7 +74,6 @@ export default function CreateTemplate() {
         <DefaultLayout>
             <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
                 <Breadcrumb pageName={pageName} />
-
                 <div className="grid grid-cols-1">
                     <div className="flex flex-col gap-9">
                         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
