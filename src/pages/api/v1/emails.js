@@ -18,7 +18,7 @@ async function handleGetRequest(req, res) {
         const connection = await createConnection();
         connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
         try {
-            const user_hash = req.headers['user_hash'];
+            const user_hash = req.headers['userhash'];
             let query = `SELECT emails.id as id, emails.subject as subject, emails.template as template, emails.updated_at as updated_at, emails.created_at as created_at, emails.mail_from as mail_from, email_prospects.clicked as clicked, email_prospects.opened as opened, email_prospects.receiver_data as receiver_data, email_prospects.contacted as contacted, email_prospects.replied as replied, email_prospects.email_sent as email_sent, email_prospects.id as prospects_id, email_prospects.email_id as email_id FROM emails LEFT JOIN email_prospects ON emails.id = email_prospects.email_id`;
             const e_id = req.query?.e_id;
             query = query + ` WHERE emails.user_hash = '${user_hash}'`;
@@ -70,12 +70,12 @@ async function handlePostRequest(req, res) {
         const connection = await createConnection();
         connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
         try {
-            const user_hash = req.headers['user_hash'];
+            const user_hash = req.headers['userhash'];
             const { id, mail_from, receivers, subject, template } = req.body;
             const currentTime = new Date().getTime();
             //const updatedTime = new Date(currentTime + 19800000);
             const updatedTime = new Date(currentTime);
-            let query = 'INSERT INTO emails (user_hash, mail_from, subject, template, created_at) VALUES (?, ?, ?, ?, ?)';
+            let query = 'INSERT INTO emails (userhash, mail_from, subject, template, created_at) VALUES (?, ?, ?, ?, ?)';
             const values = [user_hash, mail_from, subject, template, updatedTime];
             if (id) {
                 query = `UPDATE emails SET mail_from = ?, subject = ?, template = ?, created_at = ? WHERE id = ?`;

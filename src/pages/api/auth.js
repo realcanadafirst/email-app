@@ -28,8 +28,8 @@ async function handlePostRequest(req, res) {
                     const values = [userdata['user_hash'], token, token];
                     const [emailData] = await connection.execute(query, values);
                     if (emailData) {
-                        res.setHeader('user_hash', userdata['user_hash'],);
-                        res.setHeader('access_token', token);
+                        res.setHeader('userhash', userdata['user_hash'],);
+                        res.setHeader('accesstoken', token);
                         res.status(200).json({ data: { user_hash: userdata['user_hash'], name: userdata['name'], email: userdata['email'], type: userdata['type'] } });
                     }
                     res.status(500).json({ error: 'Something went wrong, Please try again.' });

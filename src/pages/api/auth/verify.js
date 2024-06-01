@@ -14,8 +14,8 @@ async function handleGetRequest(req, res) {
         const connection = await createConnection();
         connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
         try {
-            const access_token = req.headers['access_token'];
-            const user_hash = req.headers['user_hash'];
+            const access_token = req.headers['accesstoken'];
+            const user_hash = req.headers['userhash'];
             if (access_token && user_hash) {
                 const query = `SELECT * FROM login_attempts WHERE user_hash = '${user_hash}' AND access_token = '${access_token}'`;
                 const [results] = await connection.execute(query);
