@@ -17,7 +17,7 @@ async function handleGetRequest(req, res) {
         const connection = await createConnection();
         connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
         try {
-            const user_hash = req.headers['user_hash'];
+            const user_hash = req.headers['userhash'];
             let query = `SELECT * FROM templates WHERE user_hash = '${user_hash}'`;
             const t_id = req.query?.t_id;
             if (t_id) {
@@ -44,7 +44,7 @@ async function handlePostRequest(req, res) {
         connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
         try {
             const { id, subject, template } = req.body;
-            const user_hash = req.headers['user_hash'];
+            const user_hash = req.headers['userhash'];
             let query = 'INSERT INTO templates (user_hash, subject, template) VALUES (?, ?, ?)';
             let values = [user_hash, subject, template];
             if (id) {

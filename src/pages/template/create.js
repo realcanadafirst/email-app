@@ -13,7 +13,7 @@ export default function CreateTemplate() {
     const [formData, setFormData] = useState({
         id: '',
         subject: '',
-        template: '<p><br data-cke-filler="true"></p><p><br data-cke-filler="true"></p><p><br data-cke-filler="true"></p><p><br data-cke-filler="true"></p><p><br data-cke-filler="true"></p><p><br data-cke-filler="true"></p><p><br data-cke-filler="true"></p><p><br data-cke-filler="true"></p><p><br data-cke-filler="true"></p><p>Thanks for your time.</p><p><br data-cke-filler="true"></p><p>&nbsp;Cheers,</p><p>&nbsp;{{sender.name}}</p>',
+        template: '<p><br data-cke-filler="true"></p><p><br data-cke-filler="true"></p><p><br data-cke-filler="true"></p><p><br data-cke-filler="true"></p><p><br data-cke-filler="true"></p><p><br data-cke-filler="true"></p><p><br data-cke-filler="true"></p><p><br data-cke-filler="true"></p><p><br data-cke-filler="true"></p><p>Thanks for your time.</p><p><br data-cke-filler="true"></p><p>&nbsp;Cheers,</p><p>&nbsp;{{senderName}}</p>',
         status: 1
     });
     const [message, setMessage] = useState({ msg: '', type: '' });

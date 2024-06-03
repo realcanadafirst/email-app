@@ -15,7 +15,7 @@ async function handleGetRequest(req, res) {
         const connection = await createConnection();
         connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
         try {
-            const user_hash = req.headers['user_hash'];
+            const user_hash = req.headers['userhash'];
             const [results] = await connection.execute(`SELECT * FROM settings WHERE user_hash = '${user_hash}'`);
             res.status(200).json({ data: results });
         } catch (error) {
@@ -34,7 +34,7 @@ async function handlePostRequest(req, res) {
         connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
         try {
             const body = req.body;
-            const user_hash = req.headers['user_hash'];
+            const user_hash = req.headers['userhash'];
             let query = 'UPDATE settings SET value = CASE attribute ';
             body.forEach(update => {
                 query += `WHEN '${update.attribute}' THEN '${update.value}' `;

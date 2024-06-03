@@ -1,5 +1,6 @@
 'use client' // only in App Router
 import dynamic from 'next/dynamic';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 const CustomEditor = dynamic(() => { return import('@ft/ui-components/custom-editor'); }, { ssr: false });
 
 export default function AddTemplateForm({ formData, handleChange, dataChange }) {
@@ -25,6 +26,30 @@ export default function AddTemplateForm({ formData, handleChange, dataChange }) 
 
             <div className="mb-5.5">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">Content <span className="text-meta-1">*</span> </label>
+                <p className="mb-3">
+                    Note: Click to Copy Varriables
+                    <CopyToClipboard text={'{{senderCompany}}'}>
+                        <button className="px-3"> {'{{senderCompany}}'} </button>
+                    </CopyToClipboard>
+                    <CopyToClipboard text={'{{senderName}}'}>
+                        <button className="px-3"> {'{{senderName}}'} </button>
+                    </CopyToClipboard>
+                    <CopyToClipboard text={'{{firstName}}'}>
+                        <button className="px-3"> {'{{firstName}}'} </button>
+                    </CopyToClipboard>
+                    <CopyToClipboard text={'{{lastName}}'}>
+                        <button className="px-3"> {'{{lastName}}'} </button>
+                    </CopyToClipboard>
+                    <CopyToClipboard text={'{{mobileNumber}}'}>
+                        <button className="px-3"> {'{{mobileNumber}}'} </button>
+                    </CopyToClipboard>
+                    <CopyToClipboard text={'{{email}}'}>
+                        <button className="px-3"> {'{{email}}'} </button>
+                    </CopyToClipboard>
+                    <CopyToClipboard text={'{{orgName}}'}>
+                        <button className="px-3"> {'{{orgName}}'} </button>
+                    </CopyToClipboard>
+                </p>
                 <CustomEditor
                     initialData={formData.template}
                     dataChange={dataChange}

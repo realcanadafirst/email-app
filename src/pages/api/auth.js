@@ -74,13 +74,11 @@ async function handlePostRequest(req, res) {
                 }
             }
         } catch (error) {
-            console.log(error)
             res.status(500).json({ error: 'Failed to get data from database.' });
         } finally {
             await connection.end();
         }
     } catch (error) {
-        console.log(error)
         res.status(500).json({ error: 'Internal Server Error' });
     }
 }
