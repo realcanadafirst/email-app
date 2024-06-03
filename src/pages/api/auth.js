@@ -6,8 +6,10 @@ export default function handler(req, res) {
         handleGetRequest(req, res);
     } else if (req.method === 'POST') {
         handlePostRequest(req, res);
-    } else {
-        res.setHeader('Allow', ['GET, POST']);
+    } else if (req.method === 'DELETE') {
+        handleDeleteRequest(req, res);
+    }  else {
+        res.setHeader('Allow', ['GET, POST', 'DELETE']);
         res.status(405).end(`Method ${req.method} Not Allowed`);
     }
 }
@@ -79,6 +81,31 @@ async function handlePostRequest(req, res) {
             await connection.end();
         }
     } catch (error) {
+        console.log(error)
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+async function handleDeleteRequest(req, res) {
+    try {
+        const connection = await createConnection();
+        connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
+        try {
+            const access_token = req.headers['accesstoken'];
+            const user_hash = req.headers['userhash'];
+            if (user_hash && access_token) {
+                let query = `DELETE FROM login_attempts WHERE user_hash = ${user_hash} AND access_token = ${access_token}`
+                const [results] = await connection.execute(query);
+                res.status(200).json({ data: results });
+            } else {
+                res.status(403).json({ error: 'Please provide valid credentials.' });
+            }
+        } catch (error) {
+            res.status(500).json({ error: 'Failed to get data from database.' });
+        } finally {
+            await connection.end();
+        }
+    } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 }
@@ -106,4 +133,3 @@ async function handleGetRequest(req, res) {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 }
-
