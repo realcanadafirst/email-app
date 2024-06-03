@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import LogoutIcon from "@ft/ui-components/ions/LogoutIcon";
 import MyProfileicon from "@ft/ui-components/ions/MyProfileicon";
+import { fetchData } from '@ft/services/apiService';
 
 const DropdownUser = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -39,8 +40,16 @@ const DropdownUser = () => {
         return () => document.removeEventListener("keydown", keyHandler);
     });
     const logout = () => {
-        localStorage.removeItem('userData');
-        router.push('/')
+        const formData = {};
+        fetchData('/api/auth', 'DELETE', formData).then((res) => {
+            if (res.status === 'success') {
+                localStorage.removeItem('userData');
+                router.push('/');
+            } else {
+                localStorage.removeItem('userData');
+                router.push('/')
+            }
+        });
     }
     return (
         <div className="relative">

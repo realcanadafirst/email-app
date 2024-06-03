@@ -94,7 +94,7 @@ async function handleDeleteRequest(req, res) {
             const access_token = req.headers['accesstoken'];
             const user_hash = req.headers['userhash'];
             if (user_hash && access_token) {
-                let query = `DELETE FROM login_attempts WHERE user_hash = ${user_hash} AND access_token = ${access_token}`
+                let query = `DELETE FROM login_attempts WHERE user_hash = '${user_hash}' AND access_token = '${access_token}'`;
                 const [results] = await connection.execute(query);
                 res.status(200).json({ data: results });
             } else {
