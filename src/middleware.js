@@ -4,7 +4,6 @@ export async function middleware(req) {
     const { pathname } = req.nextUrl;
     const response = NextResponse.next();
     if (pathname.startsWith('/api/v1')) {
-        console.log(req.headers)
         const accesstoken = req.headers.get('accesstoken');
         const userhash = req.headers.get('userhash');
         if (accesstoken && userhash) {

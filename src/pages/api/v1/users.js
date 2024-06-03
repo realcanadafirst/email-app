@@ -4,12 +4,7 @@ export default function handler(req, res) {
     if (req.method === 'GET') {
         handleGetRequest(req, res);
     } else if (req.method === 'POST') {
-        const { actionType } = req.body;
-        if (actionType === 'test') {
-            handleTestRequest(req, res);
-        } else {
-            handlePostRequest(req, res);
-        }
+        handlePostRequest(req, res);
     } else if (req.method === 'DELETE') {
         handleDeleteRequest(req, res);
     } else {
@@ -23,25 +18,9 @@ async function handleGetRequest(req, res) {
         const connection = await createConnection();
         connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
         try {
-            const user_hash = req.headers['userhash'];
-            const page = req.query?.page;
-            let query = `SELECT * FROM contacts WHERE user_hash = '${user_hash}' order by id DESC`;
-            if(page){
-                query = query + ` LIMIT ${(page-1)*10}, 10`;
-            } else {
-                query = query + ` LIMIT 10`;
-            }
+            const query = `SELECT * FROM users order by id DESC LIMIT 25`;
             const [prospects] = await connection.execute(query);
-            if(page){
-                const [count] = await connection.execute(`SELECT COUNT(id) as totalmumber FROM contacts WHERE user_hash = '${user_hash}'`);
-                if(count && count.length) {
-                    res.status(200).json({ data: {result: prospects, pagination:{page, totalmumber:count[0]?.totalmumber ? count[0]?.totalmumber: 0}} });
-                } else {
-                    res.status(200).json({ data: {result: prospects, pagination:{page, totalmumber:0}} });
-                }
-            } else {
-                res.status(200).json({ data: prospects });
-            }
+            res.status(200).json({ data: prospects });
             return;
         } catch (error) {
             res.status(500).json({ error: 'Failed to get data from database.' });
@@ -61,8 +40,8 @@ async function handleDeleteRequest(req, res) {
             const connection = await createConnection();
             connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
             try {
-                const [results] = await connection.execute(`DELETE FROM contacts WHERE id = ${c_id}`);
-                res.status(200).json({ data: results });
+                // const [results] = await connection.execute(`DELETE FROM users WHERE id = ${c_id}`);
+                res.status(200).json({ data: 'results' });
                 return;
             } catch (error) {
                 res.status(500).json({ error: 'Failed to get data from database.' });
@@ -90,38 +69,6 @@ async function handlePostRequest(req, res) {
             res.status(200).json({ data: results });
         } catch (error) {
             res.status(500).json({ error: 'Failed to insert data in database.' });
-        } finally {
-            await connection.end();
-        }
-    } catch (error) {
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-}
-
-async function handleTestRequest(req, res) {
-    try {
-        const connection = await createConnection();
-        connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
-        const user_hash = req.headers['userhash'];
-        let query = `INSERT INTO Contacts (user_hash, firstName, lastName, email, phoneNumber, organization_name) VALUES (?, ?, ?, ?, ?, ?)`;
-        try {
-            for (let i = 1; i < 300; i++) {
-                const datat = [];
-                datat.push(`${user_hash}`);
-                datat.push('email-app');
-                datat.push('test-' + i);
-                datat.push('email-app-test-' + i + '@yopmail.com');
-                datat.push('891066002' + i);
-                datat.push('email-app-org-' + i);
-                try {
-                    await connection.query(query, datat);
-                } catch (error) {
-                }
-                res.status(200).json({ data: 'data inserted' });
-            }
-        } catch (error) {
-            res.status(500).json({ error: 'Failed to insert data in database.' });
-            return;
         } finally {
             await connection.end();
         }

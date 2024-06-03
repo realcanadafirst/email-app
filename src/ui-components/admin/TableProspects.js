@@ -4,16 +4,23 @@ import EmailAppModal from '@ft/ui-components/admin/EmailAppModal';
 import DeleteIcon from '@ft/ui-components/ions/DeleteIcon';
 
 const TableProspects = ({ setMessage }) => {
+  const [pagination, setsetPagination] = useState({ page: 1, totalmumber: 0 });
   const [prospects, setProspects] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [prospectsId, setProspectsId] = useState(null);
   useEffect(() => {
     getProspects();
-  }, []);
+  }, [pagination.page]);
   const getProspects = () => {
-    fetchData('/api/v1/prospects', 'GET').then((res) => {
+    fetchData(`/api/v1/prospects?page=${pagination.page}`, 'GET').then((res) => {
       if (res.status === 'success') {
-        setProspects(res.data)
+        if (res.data?.result) {
+          setProspects(res.data.result);
+          setsetPagination(res.data.pagination);
+        } else {
+          setProspects(res.data.result);
+          setsetPagination(res.data.pagination);
+        }
       } else {
         setProspects([]);
         setMessage({ msg: 'Failed to get prospects please try again', type: 'error' });
@@ -38,6 +45,9 @@ const TableProspects = ({ setMessage }) => {
   return (
     <div className="rounded-sm border border-stroke bg-white shadow-default rounded-[10px] dark:border-strokedark dark:bg-boxdark">
       <div className="max-w-full overflow-x-auto rounded-[10px]">
+        <div className="w-full table-auto flex justify-end px-4 py-5">
+          Showing {pagination.page * 10} Of {pagination.totalmumber}
+        </div>
         <table className="w-full table-auto">
           <thead>
             <tr className="bg-primary text-left dark:bg-meta-4">
@@ -101,6 +111,25 @@ const TableProspects = ({ setMessage }) => {
             }
           </tbody>
         </table>
+        {
+          pagination?.totalmumber > 10 ? <nav className="w-full table-auto flex justify-center py-4">
+            <ul className="flex flex-wrap items-center gap-4">
+              <li>
+                <span className={`flex items-center justify-center rounded bg-[#EDEFF1] px-3 py-1.5 text-xs font-medium text-black cursor-pointer ${pagination.page > 1 ? 'hover:bg-primary hover:text-white' : ''} `} onClick={()=>{ if(pagination.page > 1){
+                  setsetPagination({...pagination, page: pagination.page - 1 })
+                }}}>Previous</span>
+              </li>
+              <li>
+                <span className="flex items-center justify-center rounded px-3 py-1.5 font-medium bg-primary text-white">{pagination.page}</span>
+              </li>
+              <li>
+                <span className={`flex items-center justify-center rounded bg-[#EDEFF1] px-3 py-1.5 text-xs font-medium text-black cursor-pointer ${pagination.page < (pagination.totalmumber / 10) ? 'hover:bg-primary hover:text-white' : ''}`} onClick={()=>{ if(pagination.page < (pagination.totalmumber / 10)){
+                  setsetPagination({...pagination, page: parseInt(pagination.page) + 1 })
+                }}}>Next</span>
+              </li>
+            </ul>
+          </nav> : null
+        }
       </div>
       <EmailAppModal
         isOpen={isModalOpen}

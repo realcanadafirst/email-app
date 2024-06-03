@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import SidebarLinkGroup from "@ft/ui-components/admin/Layouts/SidebarLinkGroup";
 import DashboardIcon from "@ft/ui-components/ions/DashboardIcon";
 import UserIcon from "@ft/ui-components/ions/UserIcon";
 import SequenceIcon from "@ft/ui-components/ions/SequenceIcon";
@@ -12,7 +11,7 @@ import EmailIcon from "@ft/ui-components/ions/EmailIcon";
 import SettingIcon from "@ft/ui-components/ions/SettingIcon";
 import InvoiceIcon from "@ft/ui-components/ions/InvoiceIcon";
 
-const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
+const Sidebar = ({ sidebarOpen, setSidebarOpen, usertype = '2' }) => {
     const pathname = usePathname();
     const trigger = useRef(null);
     const sidebar = useRef(null);
@@ -145,6 +144,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                                     Subscriptions
                                 </Link>
                             </li>
+                            {usertype === '2' ? <li>
+                                <Link
+                                    href="/users"
+                                    className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname?.includes("users") && "bg-graydark dark:bg-meta-4"
+                                        }`}
+                                >
+                                    <UserIcon />
+                                    Users
+                                </Link>
+                            </li> : null}
                             <li>
                                 <Link
                                     href="/setting"
