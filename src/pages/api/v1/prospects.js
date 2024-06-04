@@ -89,6 +89,7 @@ async function handlePostRequest(req, res) {
             const [results] = await connection.execute(query, [user_hash, firstName, lastName, email, phoneNumber, organization_name]);
             res.status(200).json({ data: results });
         } catch (error) {
+            console.log(error)
             res.status(500).json({ error: 'Failed to insert data in database.' });
         } finally {
             await connection.end();
