@@ -34,22 +34,22 @@ const TableCampaigns = ({ campaigns }) => {
                     <tbody>
                         {campaigns && campaigns.map((campaign, key) => (
                             <tr key={key} onClick={() => viewEmail(campaign.id)} className="cursor-pointer">
-                                <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
+                                <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11 text-black dark:text-white">
                                     <p>{campaign.campaign_name}</p>
                                 </td>
                                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                                    <p className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium`}>
+                                    <p className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium text-black dark:text-white`}>
                                         {showCount(campaign?.receiver_data)}
                                     </p>
                                 </td>
                                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                                    <p className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium`}> {campaign.created_at ? formatDateTime(campaign.created_at) : ''}</p>
+                                    <p className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium text-black dark:text-white`}> {campaign.created_at ? formatDateTime(campaign.created_at) : ''}</p>
                                 </td>
                             </tr>
                         ))}
                         {(campaigns && campaigns.length < 1) &&
                             <tr>
-                                <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11 text-center" colSpan={6}>
+                                <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11 text-center text-black dark:text-white" colSpan={6}>
                                     <h5 className="font-medium text-black dark:text-white"> No Record Found </h5>
                                 </td>
                             </tr>

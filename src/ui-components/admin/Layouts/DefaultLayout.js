@@ -19,7 +19,7 @@ export default function DefaultLayout({ children }) {
     }, [])
     return (
         <>
-            <div className="flex h-screen overflow-hidden">
+            <div className="flex h-screen overflow-hidden text-black dark:text-white">
                 {isAuthenticated ? <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} isAuthenticated={isAuthenticated} usertype={userData.type} /> : null}
                 <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
                     <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} isAuthenticated={isAuthenticated} />

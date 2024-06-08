@@ -141,9 +141,9 @@ export default function Login() {
                             </div>
 
                             <div className="mt-6 text-center">
-                                <p>
+                                <p className="text-black dark:text-white">
                                     Don’t have any account?{" "}
-                                    <Link href="/signup" className="text-primary">
+                                    <Link href="/signup" className="text-primary text-black dark:text-white">
                                         Sign Up
                                     </Link>
                                 </p>

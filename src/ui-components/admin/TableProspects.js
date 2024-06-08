@@ -45,7 +45,7 @@ const TableProspects = ({ setMessage }) => {
   return (
     <div className="rounded-sm border border-stroke bg-white shadow-default rounded-[10px] dark:border-strokedark dark:bg-boxdark">
       <div className="max-w-full overflow-x-auto rounded-[10px]">
-        {pagination.totalmumber ? <div className="w-full table-auto flex justify-end px-4 py-5">
+        {pagination.totalmumber ? <div className="w-full table-auto flex justify-end px-4 py-5 text-black dark:text-white">
           Showing {pagination.page * 10} Of {pagination.totalmumber}
         </div> : null}
         <table className="w-full table-auto">
@@ -83,14 +83,14 @@ const TableProspects = ({ setMessage }) => {
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                   <p
-                    className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium`}
+                    className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium text-black dark:text-white`}
                   >
                     {contact.email}
                   </p>
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
-                    <button className="hover:text-primary" onClick={() => {
+                    <button className="hover:text-primary text-black dark:text-white" onClick={() => {
                       setProspectsId(contact.id)
                       handleModal(true);
                     }}>
@@ -139,7 +139,7 @@ const TableProspects = ({ setMessage }) => {
         isOpen={isModalOpen}
         onClose={handleModal}
         onConfirm={() => { handleConfirmAction() }}>
-        <p> Are you sure you want to delete prospect. </p>
+        <p className="text-black dark:text-white"> Are you sure you want to delete prospect. </p>
       </EmailAppModal>
     </div>
   );

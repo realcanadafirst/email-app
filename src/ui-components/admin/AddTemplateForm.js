@@ -24,10 +24,11 @@ export default function AddTemplateForm({ formData, handleChange, dataChange }) 
                 </div>
             </div>
 
-            <div className="mb-5.5">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">Content <span className="text-meta-1">*</span> </label>
-                <p className="mb-3">
-                    Note: Click to Copy Varriables
+            <div className="mb-5.5 text-black dark:text-white">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">Content <span className="text-meta-1">*</span>
+                 <span className="mb-3 text-black dark:text-white"> Note: Click To Copy Below</span>
+                </label>
+                <p className="mb-3 text-black dark:text-white">
                     <CopyToClipboard text={'{{senderCompany}}'}>
                         <button className="px-3"> {'{{senderCompany}}'} </button>
                     </CopyToClipboard>

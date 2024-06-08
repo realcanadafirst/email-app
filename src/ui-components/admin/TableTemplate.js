@@ -39,7 +39,7 @@ const TableTemplate = ({ setMessage }) => {
     deletetemplates();
   }
   const editTemplate = (id) => {
-    router.push({ pathname: '/template/create', query: { templateId: encodeURI(id) } });
+    router.push({ pathname: '/templates/create', query: { templateId: encodeURI(id) } });
   }
   const removeTag = (template) => {
     try {
@@ -86,13 +86,13 @@ const TableTemplate = ({ setMessage }) => {
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
-                    <button className="hover:text-primary" onClick={() => {
+                    <button className="hover:text-primary text-black dark:text-white" onClick={() => {
                       settemplatesId(template.id)
                       handleModal(true);
                     }}>
                       <DeleteIcon />
                     </button>
-                    <button className="hover:text-primary" onClick={() => {
+                    <button className="hover:text-primary text-black dark:text-white" onClick={() => {
                       editTemplate(template.id)
                     }}>
                       <EditIcon />
@@ -117,7 +117,7 @@ const TableTemplate = ({ setMessage }) => {
         isOpen={isModalOpen}
         onClose={handleModal}
         onConfirm={() => { handleConfirmAction() }}>
-        <p> Are you sure you want to delete template. </p>
+        <p className="text-black dark:text-white"> Are you sure you want to delete template. </p>
       </EmailAppModal>
     </div>
   );
