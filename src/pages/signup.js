@@ -27,7 +27,9 @@ export default function SignUp() {
             fetchData('/api/auth', 'POST', formData).then((res) => {
                 if (res.status === 'success') {
                     localStorage.setItem('userData', JSON.stringify(res.data));
-                    router.push('/prospects')
+                    setTimeout(() => {
+                        router.push('/prospects')
+                    }, 3000);
                 } else {
                     setMessage({ msg: res?.data ? res.data : "Something went wrong please try again.", type: 'error' });
                 }

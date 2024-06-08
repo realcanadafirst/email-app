@@ -17,12 +17,26 @@ async function handlePostRequest(req, res) {
         try {
             const currentTime = new Date();
             const updatedTime = format(currentTime, 'yyyy-MM-dd HH:MM:SS');
-            const [emailData] = await connection.execute(`SELECT * FROM emails WHERE created_at < ${updatedTime} AND email_sent != '1' LIMIT 1`);
+            const [emailData] = await connection.execute(`SELECT * FROM emails WHERE created_at < NOW() AND email_sent != '1' LIMIT 1`);
             if (emailData && emailData.length) {
                 const [appData] = await connection.execute(`SELECT * FROM settings WHERE attribute IN ('host', 'port', 'email', 'stmp_pass', 'senderName')`);
                 if (appData) {
-                    const smtpData = { secure: false, auth: {} };
+                    const smtpData = { secure: false, auth: {}, tls: { rejectUnauthorized: false }, connectionTimeout: 6000, logger: true, debug: true };
+
                     let senderName = '';
+                    // appData.map((val) => {
+                    //     if (val.attribute === 'host') {
+                    //         smtpData.host = 'mail.advaita.site'
+                    //     } else if (val.attribute === 'port') {
+                    //         smtpData.port = '587'
+                    //     } else if (val.attribute === 'email') {
+                    //         smtpData.auth.user = 'advaita1@advaita.site'
+                    //     } else if (val.attribute === 'stmp_pass') {
+                    //         smtpData.auth.pass = 'oXHol-i8Z%2B' // NXaVfv3#!rLU7TY
+                    //     } else if (val.attribute === 'senderName') {
+                    //         senderName = val.value
+                    //     }
+                    // });
                     appData.map((val) => {
                         if (val.attribute === 'host') {
                             smtpData.host = val.value
@@ -45,6 +59,7 @@ async function handlePostRequest(req, res) {
                                 let upquery = `UPDATE email_prospects SET message = ?, email_sent = ? WHERE id = ?`;
                                 await connection.execute(upquery, ['Email sent successfully', '1', prospects[i]['id']]);
                             } catch (error) {
+                                console.log(error)
                                 let upquery = `UPDATE email_prospects SET message = ?, email_sent = ? WHERE id = ?`;
                                 await connection.execute(upquery, ['Failed to send email', '0', prospects[i]['id']]);
                             }

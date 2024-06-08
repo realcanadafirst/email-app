@@ -7,9 +7,11 @@ export default function DefaultLayout({ children }) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const router = useRouter();
     const [isAuthenticated, setIsAuthenticated] = useState(false)
+    const [userData, setUserData] = useState({})
     useEffect(() => {
         if (localStorage.getItem('userData')) {
             setIsAuthenticated(true);
+            setUserData(JSON.parse(localStorage.getItem('userData')))
         } else {
             setIsAuthenticated(false);
             router.push('/')
@@ -18,7 +20,7 @@ export default function DefaultLayout({ children }) {
     return (
         <>
             <div className="flex h-screen overflow-hidden">
-                {isAuthenticated ? <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} isAuthenticated={isAuthenticated} /> : null}
+                {isAuthenticated ? <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} isAuthenticated={isAuthenticated} usertype={userData.type} /> : null}
                 <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
                     <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} isAuthenticated={isAuthenticated} />
                     <main>

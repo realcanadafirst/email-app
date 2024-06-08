@@ -28,8 +28,6 @@ async function handleGetRequest(req, res) {
             let query = `SELECT * FROM contacts WHERE user_hash = '${user_hash}' order by id DESC`;
             if(page){
                 query = query + ` LIMIT ${(page-1)*10}, 10`;
-            } else {
-                query = query + ` LIMIT 10`;
             }
             const [prospects] = await connection.execute(query);
             if(page){

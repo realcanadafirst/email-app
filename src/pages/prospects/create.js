@@ -29,7 +29,7 @@ export default function CreateContact() {
     }
 
     const saveContact = () => {
-        if (formData.firstName && formData.firstName !== '' && formData.lastName && formData.lastName !== '' && formData.email && formData.email !== '' && formData.phoneNumber && formData.phoneNumber !== '' && formData.status && formData.status !== '') {
+        if (formData.firstName && formData.firstName !== '' && formData.email && formData.email !== '' && formData.status && formData.status !== '') {
             const postData = {
                 firstName: formData.firstName,
                 lastName: formData.lastName,

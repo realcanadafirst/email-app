@@ -10,6 +10,8 @@ import TemplateIcon from "@ft/ui-components/ions/TemplateIcon";
 import EmailIcon from "@ft/ui-components/ions/EmailIcon";
 import SettingIcon from "@ft/ui-components/ions/SettingIcon";
 import InvoiceIcon from "@ft/ui-components/ions/InvoiceIcon";
+import CampaignIcon from "@ft/ui-components/ions/CampaignIcon";
+
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen, usertype = '2' }) => {
     const pathname = usePathname();
@@ -104,6 +106,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, usertype = '2' }) => {
                                     Prospects
                                 </Link>
                             </li>
+                            <li>
+                                <Link
+                                    href="/campaigns"
+                                    className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname?.includes("campaigns") && "bg-graydark dark:bg-meta-4"
+                                        }`}
+                                >
+                                    <CampaignIcon />
+                                    Campaign
+                                </Link>
+                            </li>
                             {/* <li>
                                 <Link
                                     href="/sequences"
@@ -144,7 +156,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, usertype = '2' }) => {
                                     Subscriptions
                                 </Link>
                             </li>
-                            {usertype === '2' ? <li>
+                            {usertype === '1' ? <li>
                                 <Link
                                     href="/users"
                                     className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname?.includes("users") && "bg-graydark dark:bg-meta-4"

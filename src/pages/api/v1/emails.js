@@ -75,7 +75,7 @@ async function handlePostRequest(req, res) {
             const currentTime = new Date().getTime();
             //const updatedTime = new Date(currentTime + 19800000);
             const updatedTime = new Date(currentTime);
-            let query = 'INSERT INTO emails (userhash, mail_from, subject, template, created_at) VALUES (?, ?, ?, ?, ?)';
+            let query = 'INSERT INTO emails (user_hash, mail_from, subject, template, created_at) VALUES (?, ?, ?, ?, ?)';
             const values = [user_hash, mail_from, subject, template, updatedTime];
             if (id) {
                 query = `UPDATE emails SET mail_from = ?, subject = ?, template = ?, created_at = ? WHERE id = ?`;
@@ -96,6 +96,7 @@ async function handlePostRequest(req, res) {
                 res.status(500).json({ error: 'Internal Server Error' });
             }
         } catch (error) {
+            console.log(error)
             res.status(500).json({ error: 'Failed to get data' });
         } finally {
             await connection.end();
