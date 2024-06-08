@@ -39,7 +39,7 @@ async function handleDeleteRequest(req, res) {
             const connection = await createConnection();
             connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
             try {
-                const [results] = await connection.execute(`DELETE FROM contacts WHERE id = ${c_id}`);
+                const [results] = await connection.execute(`DELETE FROM subscriptions_plan WHERE id = ${c_id}`);
                 res.status(200).json({ data: results });
                 return;
             } catch (error) {
@@ -49,7 +49,7 @@ async function handleDeleteRequest(req, res) {
                 await connection.end();
             }
         } else {
-            res.status(500).json({ error: 'Contact not found!' });
+            res.status(500).json({ error: 'Subscriptions plan not found!' });
         }
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
@@ -62,41 +62,11 @@ async function handlePostRequest(req, res) {
         connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
         try {
             const { firstName, lastName, email, phoneNumber, organization_name } = req.body;
-            const query = 'INSERT INTO Contacts (firstName, lastName, email, phoneNumber, organization_name) VALUES (?, ?, ?, ?, ?)';
-            const [results] = await connection.execute(query, [firstName, lastName, email, phoneNumber, organization_name]);
+            const query = 'INSERT INTO contacts (firstName, lastName, email, phoneNumber, organization_name, status) VALUES (?, ?, ?, ?, ?, ?)';
+            const [results] = await connection.execute(query, [firstName, lastName, email, phoneNumber, organization_name, '1']);
             res.status(200).json({ data: results });
         } catch (error) {
             res.status(500).json({ error: 'Failed to insert data in database.' });
-        } finally {
-            await connection.end();
-        }
-    } catch (error) {
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-}
-
-async function handleTestRequest(req, res) {
-    try {
-        const connection = await createConnection();
-        connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
-        let query = `INSERT INTO Contacts (firstName, lastName, email, phoneNumber, organization_name) VALUES (?, ?, ?, ?, ?)`;
-        try {
-            for (let i = 1; i < 300; i++) {
-                const datat = [];
-                datat.push('email-app');
-                datat.push('test-' + i);
-                datat.push('email-app-test-' + i + '@yopmail.com');
-                datat.push('891066002' + i);
-                datat.push('email-app-org-' + i);
-                try {
-                    await connection.query(query, datat);
-                } catch (error) {
-                }
-                res.status(200).json({ data: 'data inserted' });
-            }
-        } catch (error) {
-            res.status(500).json({ error: 'Failed to insert data in database.' });
-            return;
         } finally {
             await connection.end();
         }

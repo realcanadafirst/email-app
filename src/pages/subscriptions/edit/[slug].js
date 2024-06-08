@@ -31,7 +31,7 @@ export default function SubscriptionEdit() {
                     b1_value: res.data[0]['b1_value'],
                     b2_value: res.data[0]['b2_value'],
                     b3_value: res.data[0]['b3_value'],
-                    status: res.data[0]['status']
+                    status: '1'
                 });
             } else {
                 setMessage({ msg: 'Failed to get features please try again', type: 'error' });
