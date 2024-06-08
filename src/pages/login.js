@@ -27,7 +27,7 @@ export default function Login() {
                     localStorage.setItem('userData', JSON.stringify(res.data));
                     setTimeout(() => {
                         router.push('/prospects')
-                    }, 3000);
+                    }, 2500);
                 } else {
                     setMessage({ msg: 'Username password is invalid', type: 'error' });
                 }

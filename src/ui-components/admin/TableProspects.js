@@ -45,9 +45,9 @@ const TableProspects = ({ setMessage }) => {
   return (
     <div className="rounded-sm border border-stroke bg-white shadow-default rounded-[10px] dark:border-strokedark dark:bg-boxdark">
       <div className="max-w-full overflow-x-auto rounded-[10px]">
-        <div className="w-full table-auto flex justify-end px-4 py-5">
+        {pagination.totalmumber ? <div className="w-full table-auto flex justify-end px-4 py-5">
           Showing {pagination.page * 10} Of {pagination.totalmumber}
-        </div>
+        </div> : null}
         <table className="w-full table-auto">
           <thead>
             <tr className="bg-primary text-left dark:bg-meta-4">
@@ -115,17 +115,21 @@ const TableProspects = ({ setMessage }) => {
           pagination?.totalmumber > 10 ? <nav className="w-full table-auto flex justify-center py-4">
             <ul className="flex flex-wrap items-center gap-4">
               <li>
-                <span className={`flex items-center justify-center rounded bg-[#EDEFF1] px-3 py-1.5 text-xs font-medium text-black cursor-pointer ${pagination.page > 1 ? 'hover:bg-primary hover:text-white' : ''} `} onClick={()=>{ if(pagination.page > 1){
-                  setsetPagination({...pagination, page: pagination.page - 1 })
-                }}}>Previous</span>
+                <span className={`flex items-center justify-center rounded bg-[#EDEFF1] px-3 py-1.5 text-xs font-medium text-black cursor-pointer ${pagination.page > 1 ? 'hover:bg-primary hover:text-white' : ''} `} onClick={() => {
+                  if (pagination.page > 1) {
+                    setsetPagination({ ...pagination, page: pagination.page - 1 })
+                  }
+                }}>Previous</span>
               </li>
               <li>
                 <span className="flex items-center justify-center rounded px-3 py-1.5 font-medium bg-primary text-white">{pagination.page}</span>
               </li>
               <li>
-                <span className={`flex items-center justify-center rounded bg-[#EDEFF1] px-3 py-1.5 text-xs font-medium text-black cursor-pointer ${pagination.page < (pagination.totalmumber / 10) ? 'hover:bg-primary hover:text-white' : ''}`} onClick={()=>{ if(pagination.page < (pagination.totalmumber / 10)){
-                  setsetPagination({...pagination, page: parseInt(pagination.page) + 1 })
-                }}}>Next</span>
+                <span className={`flex items-center justify-center rounded bg-[#EDEFF1] px-3 py-1.5 text-xs font-medium text-black cursor-pointer ${pagination.page < (pagination.totalmumber / 10) ? 'hover:bg-primary hover:text-white' : ''}`} onClick={() => {
+                  if (pagination.page < (pagination.totalmumber / 10)) {
+                    setsetPagination({ ...pagination, page: parseInt(pagination.page) + 1 })
+                  }
+                }}>Next</span>
               </li>
             </ul>
           </nav> : null

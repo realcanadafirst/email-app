@@ -29,7 +29,7 @@ export default function SignUp() {
                     localStorage.setItem('userData', JSON.stringify(res.data));
                     setTimeout(() => {
                         router.push('/prospects')
-                    }, 3000);
+                    }, 2500);
                 } else {
                     setMessage({ msg: res?.data ? res.data : "Something went wrong please try again.", type: 'error' });
                 }

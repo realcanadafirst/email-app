@@ -102,7 +102,7 @@ async function handleTestRequest(req, res) {
         const connection = await createConnection();
         connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
         const user_hash = req.headers['userhash'];
-        let query = `INSERT INTO Contacts (user_hash, firstName, lastName, email, phoneNumber, organization_name) VALUES (?, ?, ?, ?, ?, ?)`;
+        let query = `INSERT INTO contacts (user_hash, firstName, lastName, email, phoneNumber, organization_name) VALUES (?, ?, ?, ?, ?, ?)`;
         try {
             for (let i = 1; i < 300; i++) {
                 const datat = [];
