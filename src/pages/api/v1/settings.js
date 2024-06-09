@@ -33,16 +33,11 @@ async function handlePostRequest(req, res) {
         const connection = await createConnection();
         connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
         try {
-            const body = req.body;
+            const { email, smtp_host, smtp_port, smtp_password, sender_name, sender_company } = req.body;
             const user_hash = req.headers['userhash'];
-            let query = 'UPDATE settings SET value = CASE attribute ';
-            body.forEach(update => {
-                query += `WHEN '${update.attribute}' THEN '${update.value}' `;
-            });
-            query += `END WHERE attribute IN (`;
-            query += body.map(update => `'${update.attribute}'`).join(', ');
-            query += `) AND user_hash = '${user_hash}'`;
-            const [results] = await connection.execute(query);
+            const query = 'UPDATE settings SET email = ?, smtp_host = ?, smtp_port = ?, smtp_password = ?, sender_name = ?, sender_company = ? WHERE user_hash = ?';
+            const values = [email, smtp_host, smtp_port, smtp_password, sender_name, sender_company, user_hash]
+            const [results] = await connection.execute(query, values);
             res.status(200).json({ data: results });
         } catch (error) {
             res.status(500).json({ error: 'Failed to get data from database.' });
