@@ -3,7 +3,6 @@ import Alert from "@ft/ui-components/admin/Alert";
 import Select from 'react-select';
 import DatePicker from "@ft/ui-components/admin/Datepicker";
 const CreateSequenceStep = ({ formData, handleChange, isOptionSelected = false, message, setMessage, sequence, templates, selectedTemplates, handleMultiSelectTemplates, setSequenceDate }) => {
-
     return (
         <div className="overflow-auto max-h-96 ">
             <div className="p-6.5 min-w-80 min-w-52">
@@ -26,7 +25,7 @@ const CreateSequenceStep = ({ formData, handleChange, isOptionSelected = false, 
                         <option value="1" className="text-body dark:text-bodydark">
                             Manual Email
                         </option>
-                        <option value="1" className="text-body dark:text-bodydark">
+                        <option value="2" className="text-body dark:text-bodydark">
                             Whatsapp
                         </option>
                     </select>
@@ -104,15 +103,28 @@ const CreateSequenceStep = ({ formData, handleChange, isOptionSelected = false, 
                         value={formData.taskNote}
                     />
                 </div>
-                <div className="mb-5.5">
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white" htmlFor="selectTemplate">Select Template</label>
-                    <Select
-                        isMulti={false}
-                        options={templates}
-                        value={selectedTemplates}
-                        onChange={handleMultiSelectTemplates}
-                    />
-                </div>
+                {
+                    formData.stepType === '2' ? <div className="mb-5.5">
+                        <label className="mb-3 block text-sm font-medium text-black dark:text-white" htmlFor="whatsapp_message">Write Message</label>
+                        <textarea
+                            className="w-full rounded border border-stroke py-3 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                            type="text"
+                            name="whatsapp_message"
+                            placeholder="Message"
+                            onChange={handleChange}
+                            value={formData.whatsapp_message}
+                        />
+                    </div> : <div className="mb-5.5">
+                        <label className="mb-3 block text-sm font-medium text-black dark:text-white" htmlFor="selectTemplate">Select Template</label>
+                        <Select
+                            isMulti={false}
+                            options={templates}
+                            value={selectedTemplates}
+                            onChange={handleMultiSelectTemplates}
+                        />
+                    </div>
+                }
+
             </div>
         </div>
     );

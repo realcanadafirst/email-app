@@ -54,11 +54,11 @@ async function handlePostRequest(req, res) {
                 }
             } else {
                 const c_id = req.query?.s_id ? req.query?.s_id : null;
-                const { step_number, stepType, intervalTime, taskPriority, taskNote, subject, template, status, execution_date } = req.body;
+                const { step_number, stepType, intervalTime, taskPriority, taskNote, subject, template, status,whatsapp_message, execution_date } = req.body;
                 try {
                     const updatedTime = format(execution_date, 'yyyy-MM-dd HH:mm:ss');
-                    const query = 'INSERT INTO sequence_steps (sequence_id, step_number, step_type, interval_time, execution_date, priority, note, subject, template, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-                    const values = [c_id, step_number, stepType, intervalTime, updatedTime, taskPriority, taskNote, subject, template, status];
+                    const query = 'INSERT INTO sequence_steps (sequence_id, step_number, step_type, interval_time, execution_date, priority, note, subject, template,whatsapp_message, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                    const values = [c_id, step_number, stepType, intervalTime, updatedTime, taskPriority, taskNote, subject, template,whatsapp_message, status];
                     const [results] = await connection.execute(query, values);
                     res.status(200).json({ data: results });
                 } catch (error) {

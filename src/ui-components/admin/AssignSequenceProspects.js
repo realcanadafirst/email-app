@@ -1,7 +1,7 @@
 import Alert from "@ft/ui-components/admin/Alert";
 import React from 'react';
 import Select from 'react-select';
-const AssignSequenceProspects = ({ prospects, selectedOptions, onChange, message, setMessage, campaigns }) => {
+const AssignSequenceProspects = ({ prospects, selectedOptions, onChange, message, setMessage, campaigns, setSelectedCampaign, selectedCampaign }) => {
     const handleChange = (selectedOptions) => onChange(selectedOptions);
     return (
         <div>
@@ -20,11 +20,11 @@ const AssignSequenceProspects = ({ prospects, selectedOptions, onChange, message
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">Or</label>
                 </div>
                 <div className="mb-5.5">
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white" htmlFor="Campaign">Choose  Campaign</label>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white" htmlFor="Campaign">Choose Campaign</label>
                     <Select
                         options={campaigns}
-                        value={selectedOptions}
-                        onChange={handleChange}
+                        value={selectedCampaign}
+                        onChange={(val)=>setSelectedCampaign(val)}
                     />
                 </div>
             </div>

@@ -26,6 +26,7 @@ export default function SequenceUpdate() {
     const [callStepApi, setStepCallApi] = useState(true);
     const [templates, setTemplates] = useState([]);
     const [selectedTemplates, setSelectedTemplates] = useState([]);
+    const [selectedCampaign, setSelectedCampaign] = useState(null);
     const [formData, setFormData] = useState({
         stepType: '',
         intervalTimeDay: '',
@@ -36,6 +37,7 @@ export default function SequenceUpdate() {
         taskNote: '',
         subject: '',
         template: '',
+        whatsapp_message:'',
         status: 1
     });
     const router = useRouter();
@@ -82,9 +84,13 @@ export default function SequenceUpdate() {
     }
 
     const assignProspects = () => {
-        if (selectedProspects.length) {
+        if (selectedProspects.length || selectedCampaign) {
+            let receiverdata = []
+            if(selectedCampaign){
+                receiverdata = JSON.parse(selectedCampaign.receiver_data);
+            }
             const postData = {
-                prospects: selectedProspects,
+                prospects: [...selectedProspects,...receiverdata],
             };
             setMessage({ msg: '', type: '' });
             fetchData(`/api/v1/sequence/prospects?s_id=${slug}`, 'POST', postData).then((res) => {
@@ -92,6 +98,7 @@ export default function SequenceUpdate() {
                     setIsModalOpen(false);
                     setCallApi(true);
                     setMessage({ msg: 'Prospects assigned successfully!', type: 'success' });
+                    setSelectedCampaign(null);
                     setTimeout(() => {
                         router.push({ pathname: `/sequences/view/${slug}`, query: { status: 'success' } });
                     }, 1000)
@@ -105,7 +112,7 @@ export default function SequenceUpdate() {
     }
 
     const createSteps = () => {
-        if (formData.stepType && formData.stepType !== '' && ((formData.intervalTimeDay && formData.intervalTimeDay !== '' && formData.intervalTimeHour && formData.intervalTimeHour !== '' && formData.intervalTimeMin && formData.intervalTimeMin !== '') || (formData.execution_date && formData.execution_date !== '')) && formData.taskPriority && formData.taskPriority !== '' && formData.taskNote && formData.taskNote !== '' && selectedTemplates && selectedTemplates.value !== '') {
+        if (formData.stepType && formData.stepType !== '' && ((formData.intervalTimeDay && formData.intervalTimeDay !== '' && formData.intervalTimeHour && formData.intervalTimeHour !== '' && formData.intervalTimeMin && formData.intervalTimeMin !== '') || (formData.execution_date && formData.execution_date !== '')) && formData.taskPriority && formData.taskPriority !== '' && formData.taskNote && formData.taskNote !== '' && ( formData.stepType !== '2' ? (selectedTemplates && selectedTemplates.value !== '') : (formData.whatsapp_message && formData.whatsapp_message !== ''))) {
             const currentTime = new Date().getTime();
             let updatedTime = currentTime;
             if (formData.intervalTimeDay && formData.intervalTimeDay !== '') {
@@ -121,8 +128,9 @@ export default function SequenceUpdate() {
                 execution_date: updatedTime,
                 taskPriority: formData.taskPriority,
                 taskNote: formData.taskNote,
-                subject: selectedTemplates.label,
-                template: selectedTemplates.data,
+                subject: selectedTemplates?.label ? selectedTemplates.label : '',
+                template: selectedTemplates?.data ? selectedTemplates.data : '',
+                whatsapp_message: formData.whatsapp_message,
                 status: formData.status,
             };
             setMessage({ msg: '', type: '' });
@@ -138,6 +146,7 @@ export default function SequenceUpdate() {
                         taskNote: '',
                         subject: '',
                         template: '',
+                        whatsapp_message: '',
                         status: 1
                     });
                     setSelectedTemplates([]);
@@ -246,7 +255,7 @@ export default function SequenceUpdate() {
                     confirmMsg={'Save'}
                     onConfirm={() => { createSequenceApi() }}>
                     {
-                        activeTab === 'styled-overview' ? <CreateSequenceStep formData={formData} handleChange={handleChange} message={message} setMessage={setMessage} sequence={sequence} templates={templates} selectedTemplates={selectedTemplates} handleMultiSelectTemplates={handleMultiSelectTemplates} setSequenceDate={setSequenceDate} /> : <AssignSequenceProspects prospects={prospects} onChange={handleMultiSelectProspects} selectedProspects={selectedProspects} message={message} setMessage={setMessage} campaigns={campaigns} />
+                        activeTab === 'styled-overview' ? <CreateSequenceStep formData={formData} handleChange={handleChange} message={message} setMessage={setMessage} sequence={sequence} templates={templates} selectedTemplates={selectedTemplates} handleMultiSelectTemplates={handleMultiSelectTemplates} setSequenceDate={setSequenceDate} /> : <AssignSequenceProspects prospects={prospects} onChange={handleMultiSelectProspects} selectedProspects={selectedProspects} message={message} setMessage={setMessage} campaigns={campaigns} selectedCampaign={selectedCampaign} setSelectedCampaign={setSelectedCampaign} />
                     }
                 </EmailAppModal>
             </div> : null}
