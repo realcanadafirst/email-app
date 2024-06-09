@@ -92,3 +92,6 @@ body.admin {
   max-width: 65%;
   max-height: 80vh;
 }
+.w-max-content{
+  max-width: max-content;
+}

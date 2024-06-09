@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 const CustomEditor = dynamic(() => { return import('@ft/ui-components/custom-editor'); }, { ssr: false });
 
-export default function AddTemplateForm({ formData, handleChange, dataChange }) {
+export default function AddTemplateForm({ formData, handleChange, dataChange, readonly=false }) {
     return (
         <>
             <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
@@ -17,6 +17,7 @@ export default function AddTemplateForm({ formData, handleChange, dataChange }) 
                             className="w-full rounded border border-stroke bg-gray py-3 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                             type="text"
                             name="subject"
+                            readOnly={readonly}
                             onChange={handleChange}
                             value={formData.subject}
                         />

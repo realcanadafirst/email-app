@@ -22,7 +22,7 @@ export async function sendEMail({ appDataResult, emailDataResult, receiver_data}
         <body><img src="${BASE_URL}/${trackingUrl}" style="display:none;" />${template} </body></html>`;
     const mailOptions = {
         from: emailDataResult['mail_from'],
-        to: receiver_data['label'],
+        to: receiver_data['email'],
         subject: emailDataResult['subject'],
         html: template
     };

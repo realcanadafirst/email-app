@@ -30,16 +30,16 @@ async function handlePostRequest(req, res) {
                                 const receiver_data = JSON.parse(prospects[i]['receiver_data']);
                                 await sendEMail({ appDataResult, emailDataResult, receiver_data});
                                 let upquery = `UPDATE email_prospects SET message = ?, email_sent = ? WHERE id = ?`;
-                                //await connection.execute(upquery, ['Email sent successfully', '1', prospects[i]['id']]);
+                                await connection.execute(upquery, ['Email sent successfully', '1', prospects[i]['id']]);
                             } catch (error) {
                                 console.log(error)
                                 let upquery = `UPDATE email_prospects SET message = ?, email_sent = ? WHERE id = ?`;
-                                //await connection.execute(upquery, ['Failed to send email', '0', prospects[i]['id']]);
+                                await connection.execute(upquery, ['Failed to send email', '0', prospects[i]['id']]);
                             }
                         }
                         if (prospects.length < 10) {
                             let upquery = `UPDATE emails SET email_sent = ? WHERE id = ?`;
-                            //await connection.execute(upquery, ['1', emailData[0]['id']]);
+                            await connection.execute(upquery, ['1', emailData[0]['id']]);
                         }
                     }
                     res.status(200).json({ message: 'email sent.' });

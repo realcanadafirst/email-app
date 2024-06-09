@@ -22,16 +22,21 @@ async function handleGetRequest(req, res) {
         try {
             const c_id = req.query?.s_id ? req.query?.s_id : null;
             const [prospects] = await connection.execute('SELECT * FROM `contacts`');
+            const [campaigns] = await connection.execute('SELECT * FROM `campaigns`');
             const [assigned_prospects] = await connection.execute(`SELECT * FROM sequence_prospects WHERE sequence_id = ${c_id}`);
             const data = {
                 'prospects': [],
-                'assigned_prospects': []
+                'assigned_prospects': [],
+                'campaigns': []
             }
             if (prospects) {
                 data.prospects = prospects;
             }
             if (assigned_prospects) {
                 data.assigned_prospects = assigned_prospects;
+            }
+            if(campaigns){
+                data.campaigns = campaigns;
             }
             res.status(200).json({ data: data });
             return;

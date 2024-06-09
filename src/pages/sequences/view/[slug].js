@@ -18,9 +18,11 @@ export default function SequenceUpdate() {
     const [message, setMessage] = useState({ msg: '', type: '' });
     const [sequence, setSequence] = useState(null);
     const [prospects, setProspects] = useState([]);
+    const [campaigns, setCampaigns] = useState([]);
     const [assignedProspects, setAssignedProspects] = useState([]);
     const [selectedProspects, setSelectedProspects] = useState([]);
     const [callApi, setCallApi] = useState(true);
+    const [stepNumber, setStepNumber] = useState(0);
     const [callStepApi, setStepCallApi] = useState(true);
     const [templates, setTemplates] = useState([]);
     const [selectedTemplates, setSelectedTemplates] = useState([]);
@@ -114,6 +116,7 @@ export default function SequenceUpdate() {
             updatedTime = new Date(updatedTime + 19800000);
             const postData = {
                 stepType: formData.stepType,
+                step_number: stepNumber,
                 intervalTime: `${formData.intervalTimeDay}:${formData.intervalTimeHour}:${formData.intervalTimeMin}`,
                 execution_date: updatedTime,
                 taskPriority: formData.taskPriority,
@@ -222,7 +225,7 @@ export default function SequenceUpdate() {
                 <div id="default-styled-tab-content">
                     <div className={`p-4 rounded-lg bg-white ${activeTab === 'styled-overview' ? 'block' : 'hidden'
                         }`} id="styled-overview" role="tabpanel" aria-labelledby="overview-tab">
-                        {slug ? <SequenceOverView id={slug} callStepApi={callStepApi} setStepCallApi={setStepCallApi} setMessage={setMessage} /> : null}
+                        {slug ? <SequenceOverView id={slug} callStepApi={callStepApi} setStepCallApi={setStepCallApi} setMessage={setMessage} setStepNumber={setStepNumber} /> : null}
                     </div>
                     <div className={`p-4 rounded-lg bg-white ${activeTab === 'styled-insights' ? 'block' : 'hidden'
                         }`} id="styled-insights" role="tabpanel" aria-labelledby="insights-tab">
@@ -234,7 +237,7 @@ export default function SequenceUpdate() {
                     </div>
                     <div className={`p-4 rounded-lg bg-white ${activeTab === 'styled-prospects' ? 'block' : 'hidden'
                         }`} id="styled-prospects" role="tabpanel" aria-labelledby="prospects-tab">
-                        {slug ? <SequenceProspects id={slug} prospects={prospects} setProspects={setProspects} assignedProspects={assignedProspects} setAssignedProspects={setAssignedProspects} setCallApi={setCallApi} callApi={callApi} setMessage={setMessage} /> : null}
+                        {slug ? <SequenceProspects id={slug} prospects={prospects} setProspects={setProspects} assignedProspects={assignedProspects} setAssignedProspects={setAssignedProspects} setCallApi={setCallApi} callApi={callApi} setMessage={setMessage} setCampaigns={setCampaigns} /> : null}
                     </div>
                 </div>
                 <EmailAppModal
@@ -243,7 +246,7 @@ export default function SequenceUpdate() {
                     confirmMsg={'Save'}
                     onConfirm={() => { createSequenceApi() }}>
                     {
-                        activeTab === 'styled-overview' ? <CreateSequenceStep formData={formData} handleChange={handleChange} message={message} setMessage={setMessage} sequence={sequence} templates={templates} selectedTemplates={selectedTemplates} handleMultiSelectTemplates={handleMultiSelectTemplates} setSequenceDate={setSequenceDate} /> : <AssignSequenceProspects prospects={prospects} onChange={handleMultiSelectProspects} selectedProspects={selectedProspects} message={message} setMessage={setMessage} />
+                        activeTab === 'styled-overview' ? <CreateSequenceStep formData={formData} handleChange={handleChange} message={message} setMessage={setMessage} sequence={sequence} templates={templates} selectedTemplates={selectedTemplates} handleMultiSelectTemplates={handleMultiSelectTemplates} setSequenceDate={setSequenceDate} /> : <AssignSequenceProspects prospects={prospects} onChange={handleMultiSelectProspects} selectedProspects={selectedProspects} message={message} setMessage={setMessage} campaigns={campaigns} />
                     }
                 </EmailAppModal>
             </div> : null}

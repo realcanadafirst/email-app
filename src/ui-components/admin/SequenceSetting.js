@@ -100,7 +100,7 @@ const SequenceSetting = ({ id, sequence, saveSettings }) => {
                         </div>
                     </div>
                 </div>
-                <div className="flex justify-end gap-4.5">
+                <div className="flex justify-center gap-4.5">
                     <button className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90" onClick={() => { saveSettings(formData) }}>
                         Save
                     </button>

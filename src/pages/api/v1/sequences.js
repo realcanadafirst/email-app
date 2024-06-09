@@ -17,10 +17,11 @@ async function handleGetRequest(req, res) {
         const connection = await createConnection();
         connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
         try {
-            let query = 'SELECT * FROM `sequences`';
+            const user_hash = req.headers['userhash'];
+            let query = `SELECT * FROM sequences WHERE user_hash = '${user_hash}'`;
             const c_id = req.query?.c_id;
             if (c_id) {
-                query = query + `WHERE id = ${c_id}`;
+                query = query + ` AND id = ${c_id}`;
             }
             const [results] = await connection.execute(query);
             res.status(200).json({ data: results });
@@ -40,7 +41,8 @@ async function handlePostRequest(req, res) {
         connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
         try {
             const { id, name, options, mailbox, replies, meetings } = req.body;
-            let query = 'INSERT INTO sequences (name, sequence_type, from_email) VALUES (?, ?, ?)';
+            const user_hash = req.headers['userhash'];
+            let query = 'INSERT INTO sequences (user_hash, name, sequence_type, from_email) VALUES (?, ?, ?, ?)';
             const values = [];
             if (id) {
                 query = `UPDATE sequences SET name = ?, from_email = ?, replies = ?, meetings = ? WHERE id = ?`;
@@ -50,6 +52,7 @@ async function handlePostRequest(req, res) {
                 values.push(meetings);
                 values.push(id);
             } else {
+                values.push(user_hash);
                 values.push(name);
                 values.push(options);
                 values.push(mailbox);
@@ -57,7 +60,7 @@ async function handlePostRequest(req, res) {
             const [results] = await connection.execute(query, values);
             res.status(200).json({ data: results });
         } catch (error) {
-            res.status(500).json({ error: 'Failed to get data from database.' });
+            res.status(500).json({ error: 'Failed to insert data.' });
         } finally {
             await connection.end();
         }
@@ -77,7 +80,7 @@ async function handleDeleteRequest(req, res) {
                 const [results] = await connection.execute(query);
                 res.status(200).json({ data: results });
             } catch (error) {
-                res.status(500).json({ error: 'Failed to get data from database.' });
+                res.status(500).json({ error: 'Failed to delete sequence.' });
             } finally {
                 await connection.end();
             }

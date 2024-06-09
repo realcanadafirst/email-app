@@ -111,7 +111,7 @@ const SequenceStepList = ({ stepData, setStepCallApi, setMessage }) => {
                 onClose={sendTestEmail}
                 confirmMsg={sendTestEmailStatus ? "Send Test Email": "Save"}
                 onConfirm={() => { updateSequenceApi() }}>
-                <AddTemplateForm handleChange={handleChange} formData={formData} dataChange={dataChange} sendTestEmailStatus={sendTestEmailStatus} />
+                <AddTemplateForm handleChange={handleChange} formData={formData} dataChange={dataChange} sendTestEmailStatus={sendTestEmailStatus} readonly={sendTestEmailStatus} />
             </EmailAppModal>
         </>
     );
