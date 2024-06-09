@@ -13,7 +13,7 @@ export async function sendEMail({ appDataResult, emailDataResult, receiver_data}
     let template = emailDataResult['template'];
     template = template.replace(/{{firstName}}/g, receiver_data['firstName'] ? receiver_data['firstName'] : '');
     template = template.replace(/{{lastName}}/g,  receiver_data['lastName'] ? receiver_data['lastName'] : '');
-    template = template.replace(/{{mobileNumber}}/g,  receiver_data['mobileNumber'] ? receiver_data['mobileNumber'] : '');
+    template = template.replace(/{{mobileNumber}}/g,  receiver_data['phoneNumber'] ? receiver_data['phoneNumber'] : '');
     template = template.replace(/{{orgName}}/g,  receiver_data['orgName'] ? receiver_data['orgName'] : '');
     template = template.replace(/{{email}}/g,  receiver_data['email'] ? receiver_data['email'] : '');
     template = template.replace(/{{senderName}}/g, appDataResult['sender_name'] ? appDataResult['sender_name'] : '');

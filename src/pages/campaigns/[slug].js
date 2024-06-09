@@ -12,10 +12,8 @@ export default function CreateUpdateCampaign() {
     const [message, setMessage] = useState({ msg: '', type: '' });
     const [prospects, setProspects] = useState([]);
     const [selectedOptions, setSelectedOptions] = useState([]);
-
     const router = useRouter();
     const { slug, id } = router.query;
-    console.log(router.query)
     const pageName = slug === 'create' ? 'Create Campaign' : 'Update Campaign';
     useEffect(() => {
         if (slug === 'create') {
@@ -28,7 +26,7 @@ export default function CreateUpdateCampaign() {
         fetchData(`/api/v1/prospects`, 'GET').then((res) => {
             if (res.status === 'success') {
                 const prospects_t = res.data;
-                const options_temp = prospects_t.map((val) => { return { value: val.id, label: val.email, email: val.email, firstName: val.firstName, lastName: val.lastName, phoneNumber: val.phoneNumber } });
+                const options_temp = prospects_t.map((val) => { return { value: val.id, label: val.email, ...val } });
                 setProspects([...options_temp]);
             } else {
                 setMessage({ msg: 'Failed to get prospects please try again', type: 'error' });
@@ -42,7 +40,7 @@ export default function CreateUpdateCampaign() {
                 const campaign_t = res.data['campaign'][0];
                 setSelectedOptions(JSON.parse(campaign_t['receiver_data']));
                 setFormData({ campaigns_name: campaign_t.campaign_name });
-                const options_temp = prospects_t.map((val) => { return { value: val.id, label: val.email, email: val.email, firstName: val.firstName, lastName: val.lastName, phoneNumber: val.phoneNumber } });
+                const options_temp = prospects_t.map((val) => { return { value: val.id, label: val.email, ...val } });
                 setProspects([...options_temp]);
             } else {
                 setMessage({ msg: 'Failed to get prospects please try again', type: 'error' });

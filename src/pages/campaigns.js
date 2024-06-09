@@ -4,6 +4,8 @@ import DefaultLayout from "@ft/ui-components/admin/Layouts/DefaultLayout";
 import Breadcrumb from '@ft/ui-components/admin/breadcrumb';
 import TableCampaigns from '@ft/ui-components/admin/TableCampaigns';
 import { fetchData } from '@ft/services/apiService';
+import Alert from "@ft/ui-components/admin/Alert";
+
 export default function Campaign() {
     const [message, setMessage] = useState({ msg: '', type: '' });
     const [campaigns, setCampaigns] = useState(null);
@@ -29,6 +31,8 @@ export default function Campaign() {
                         Create
                     </Link>
                 </div>
+                {message.msg && <Alert message={message} setMessage={setMessage} />}
+
                 <TableCampaigns campaigns={campaigns} />
             </div>
         </DefaultLayout>
