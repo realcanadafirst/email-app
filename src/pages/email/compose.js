@@ -27,7 +27,7 @@ export default function ComposeEmail() {
         fetchData(`/api/v1/prospects`, 'GET').then((res) => {
             if (res.status === 'success') {
                 const options_t = res.data;
-                const options_temp = options_t.map((val) => { return { value: val.id, label: val.email, firstName: val.firstName } });
+                const options_temp = options_t.map((val) => { return { value: val.id, label: val.email, ...val } });
                 setProspects([...options_temp]);
             } else {
                 setMessage({ msg: 'Failed to get prospects please try again', type: 'error' });

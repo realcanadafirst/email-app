@@ -21,6 +21,16 @@ export default function Email() {
             }
         });
     }
+    const deleteProspects = (emailId) => {
+        fetchData(`/api/v1/emails?c_id=${emailId}`, 'DELETE').then((res) => {
+            if (res.status === 'success') {
+                getEmails();
+                setMessage({ msg: 'Email deleted successfully!', type: 'success' });
+            } else {
+                setMessage({ msg: 'Failed to get prospects please try again', type: 'error' });
+            }
+        });
+    }
     return (
         <DefaultLayout>
             <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
@@ -30,7 +40,7 @@ export default function Email() {
                         Compose
                     </Link>
                 </div>
-                <TableEmails emails={emails} />
+                <TableEmails emails={emails} deleteProspects={deleteProspects} />
             </div>
         </DefaultLayout>
     );

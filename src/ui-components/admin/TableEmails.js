@@ -1,6 +1,11 @@
+import { useState } from "react";
 import { format } from 'date-fns';
 import { useRouter } from "next/router";
-const TableEmails = ({ emails }) => {
+import EmailAppModal from '@ft/ui-components/admin/EmailAppModal';
+import DeleteIcon from '@ft/ui-components/ions/DeleteIcon';
+const TableEmails = ({ emails, deleteProspects }) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [emailId, setEmailId] = useState(null);
     const formatDateTime = (date) => format(date, 'MMMM d, yyyy');
     const router = useRouter();
     const showCount = (data = [], type) => {
@@ -9,6 +14,11 @@ const TableEmails = ({ emails }) => {
     }
     const viewEmail = (id) => {
         router.push({ pathname: `/email/view/${id}` });
+    }
+    const handleModal = (value) => setIsModalOpen(value);
+    const handleConfirmAction = () => {
+        setIsModalOpen(false);
+        deleteProspects(emailId);
     }
     return (
         <div className="rounded-sm border border-stroke bg-white shadow-default rounded-[10px] dark:border-strokedark dark:bg-boxdark">
@@ -37,12 +47,15 @@ const TableEmails = ({ emails }) => {
                             <th className="px-4 py-4 font-medium text-white dark:text-white">
                                 Created
                             </th>
+                            <th className="px-4 py-4 font-medium text-white dark:text-white">
+                                Action
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         {emails && emails.map((sequence, key) => (
-                            <tr key={key} onClick={() => viewEmail(sequence.id)} className="cursor-pointer">
-                                <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
+                            <tr key={key} className="cursor-pointer">
+                                <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11" onClick={() => viewEmail(sequence.id)} >
                                     <p>{sequence.subject}</p>
                                 </td>
                                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
@@ -65,6 +78,16 @@ const TableEmails = ({ emails }) => {
                                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                                     <p className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium`}> {sequence.created_at ? formatDateTime(sequence.created_at) : ''}</p>
                                 </td>
+                                <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                                    <div className="flex items-center space-x-3.5">
+                                        <button className="hover:text-primary text-black dark:text-white" onClick={() => {
+                                            setEmailId(sequence.id)
+                                            handleModal(true);
+                                        }}>
+                                            <DeleteIcon />
+                                        </button>
+                                    </div>
+                                </td>
                             </tr>
                         ))}
                         {(emails && emails.length < 1) &&
@@ -77,6 +100,12 @@ const TableEmails = ({ emails }) => {
                     </tbody>
                 </table>
             </div>
+            <EmailAppModal
+                isOpen={isModalOpen}
+                onClose={handleModal}
+                onConfirm={() => { handleConfirmAction() }}>
+                <p className="text-black dark:text-white"> Are you sure you want to delete email. </p>
+            </EmailAppModal>
         </div>
     );
 };

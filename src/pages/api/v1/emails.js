@@ -30,8 +30,8 @@ async function handleGetRequest(req, res) {
             const emails = [];
             const prospects = {};
             results.forEach(row => {
-                if (!prospects[row.email_id]) {
-                    prospects[row.email_id] = {
+                if (!prospects[row.id]) {
+                    prospects[row.id] = {
                         id: row.id,
                         subject: row.subject,
                         mail_from: row.mail_from,
@@ -113,11 +113,13 @@ async function handleDeleteRequest(req, res) {
             const connection = await createConnection();
             connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
             try {
-                const query = `DELETE FROM templates WHERE id = ${c_id}`;
+                const query = `DELETE FROM emails WHERE id = ${c_id}`;
                 const [results] = await connection.execute(query);
+                const queryt = `DELETE FROM email_prospects WHERE email_id = ${c_id}`;
+                const [resultst] = await connection.execute(query);
                 res.status(200).json({ data: results });
             } catch (error) {
-                res.status(500).json({ error: 'Failed to get data BB' });
+                res.status(500).json({ error: 'Failed to get data' });
             } finally {
                 await connection.end();
             }
