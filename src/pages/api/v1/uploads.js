@@ -37,30 +37,49 @@ async function handlePostRequest(req, res) {
                 let totalrecords = 0;
                 try {
                     const user_hash = req.headers['userhash'];
-                    console.log(data.length)
-                    for (let index = 1; index < data.length; index++) {
+                    const row = data[0];
+                    const firstNameIndex = row.findIndex((v)=>{
+                        const val = v.trim();
+                        return (val.toLowerCase() === 'first name' || val.toLowerCase() === 'name')
+                    });
+                    const lastNameIndex = row.findIndex((v)=>{
+                        const val = v.trim();
+                        return val.toLowerCase() === 'last name'
+                    });
+                    const emailIndex = row.findIndex((v)=>{
+                        const val = v.trim();
+                        return val.toLowerCase() === 'email'
+                    });
+                    const phoneNumberIndex = row.findIndex((v)=>{
+                        const val = v.trim();
+                        return val.toLowerCase() === 'phone'
+                    });
+                    const organization_nameIndex = row.findIndex((v)=>{
+                        const val = v.trim();
+                        return val.toLowerCase() === 'organization name'
+                    });
+                    for (let index = 1; index < 10; index++) {
                         const element = data[index];
                         const values = [];
                         values.push(user_hash);
-                        if (element[0] && element[0] !== undefined && element[0] !== null && element[2] && element[2] !== undefined && element[2] !== null) {
-                            values.push(element[0]);
-                            if (element[1] && element[1] !== undefined && element[1] !== null) {
-                                values.push(element[1]);
+                        if (element[firstNameIndex] && element[firstNameIndex] !== undefined && element[firstNameIndex] !== null && element[emailIndex] && element[emailIndex] !== undefined && element[emailIndex] !== null) {
+                            values.push(element[firstNameIndex]);
+                            if (element[lastNameIndex] && element[lastNameIndex] !== undefined && element[lastNameIndex] !== null) {
+                                values.push(element[lastNameIndex]);
                             } else {
                                 values.push('');
                             }
-                            values.push(element[2]);
-                            if (element[3] && element[3] !== undefined && element[3] !== null) {
-                                values.push(element[3]);
+                            values.push(element[emailIndex]);
+                            if (element[phoneNumberIndex] && element[phoneNumberIndex] !== undefined && element[phoneNumberIndex] !== null) {
+                                values.push(element[phoneNumberIndex]);
                             } else {
                                 values.push('');
                             }
-                            if (element[4] && element[4] !== undefined && element[4] !== null) {
-                                values.push(element[4]);
+                            if (element[organization_nameIndex] && element[organization_nameIndex] !== undefined && element[organization_nameIndex] !== null) {
+                                values.push(element[organization_nameIndex]);
                             } else {
                                 values.push('');
                             }
-                            console.log(values)
                             totalrecords++;
                             try {
                                 const query = 'INSERT INTO contacts (user_hash, firstName, lastName, email, phoneNumber, organization_name) VALUES (?, ?, ?, ?, ?, ?)';
@@ -76,7 +95,6 @@ async function handlePostRequest(req, res) {
                     }
                     res.status(200).json({ data: totalrecords, message: `Out of ${totalrecords} Records ${totalrecords - failed} Records uploaded successfully` });
                 } catch (error) {
-                    console.log(error)
                     res.status(500).json({ error: 'Failed to insert data in database.' });
                 } finally {
                     await connection.end();

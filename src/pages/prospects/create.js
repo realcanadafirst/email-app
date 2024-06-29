@@ -23,9 +23,15 @@ export default function CreateContact() {
     };
     const router = useRouter();
     const handleChange = (e) => {
-        const formDataTemp = { ...formData }
-        formDataTemp[e.target.name] = e.target.value;
-        setFormData(formDataTemp)
+        const formDataTemp = { ...formData };
+        if(e.target.name === 'phoneNumber'){
+            if(/^\d*$/.test(e.target.value)){
+                formDataTemp[e.target.name] = e.target.value;
+            }
+        } else {
+            formDataTemp[e.target.name] = e.target.value;
+        }
+        setFormData(formDataTemp);
     }
 
     const saveContact = () => {

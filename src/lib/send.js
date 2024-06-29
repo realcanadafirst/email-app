@@ -8,7 +8,13 @@ export async function sendEMail({ appDataResult, emailDataResult, receiver_data}
     smtpData.port = appDataResult['smtp_port'];
     smtpData.auth.user = appDataResult['email'];
     smtpData.auth.pass = appDataResult['smtp_password'];
-    const trackingUrl = `/api/v1/trackemail`;
+
+    // smtpData.host = 'mail.advaita.site';
+    // smtpData.port = '587';
+    // smtpData.auth.user = 'email-app@advaita.site';
+    // smtpData.auth.pass = '^~.}NeO^yfMr';
+    
+    const trackingUrl = `api/v1/trackemail`;
     const transporter = nodemailer.createTransport(smtpData);
     let template = emailDataResult['template'];
     template = template.replace(/{{firstName}}/g, receiver_data['firstName'] ? receiver_data['firstName'] : '');
@@ -19,7 +25,7 @@ export async function sendEMail({ appDataResult, emailDataResult, receiver_data}
     template = template.replace(/{{senderName}}/g, appDataResult['sender_name'] ? appDataResult['sender_name'] : '');
     template = template.replace(/{{senderCompany}}/g, appDataResult['sender_company'] ? appDataResult['sender_company'] : '');
     template = `<html><style> .tracking-pixel { display: block; width: 1px; height: 1px; overflow: hidden;}</style>
-        <body><img src="${BASE_URL}/${trackingUrl}" style="display:none;" />${template} </body></html>`;
+        <body><img src="${BASE_URL}${trackingUrl}" style="display:none;" />${template} </body></html>`;
     const mailOptions = {
         from: emailDataResult['mail_from'],
         to: receiver_data['email'],
@@ -28,5 +34,6 @@ export async function sendEMail({ appDataResult, emailDataResult, receiver_data}
     };
     console.log('mailOptions')
     console.log(smtpData)
-   return await transporter.sendMail(mailOptions);
+    console.log(mailOptions)
+    return await transporter.sendMail(mailOptions);
 }

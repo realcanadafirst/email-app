@@ -81,10 +81,10 @@ async function sendTestEmail(req, res) {
         connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
         try {
             const user_hash = req.headers['userhash'];
-            const [appData] = await connection.execute(`SELECT * FROM settings WHERE user_hash = '${user_hash}'`);
+            // `SELECT * FROM settings WHERE user_hash = '${user_hash}'`
+            const [appData] = await connection.execute(`SELECT * FROM settings`);
             if (appData) {
                 const appDataResult = appData[0];
-                                
                 const step = req.query?.step ? req.query?.step : null;
                 const s_id = req.query?.s_id;
                 const [sequences] = await connection.execute(`SELECT * FROM sequences WHERE id = ${s_id}`);
