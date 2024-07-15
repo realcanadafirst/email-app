@@ -6,13 +6,12 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { fetchData } from '@ft/services/apiService';
 import Alert from "@ft/ui-components/admin/Alert";
+import FullLoader from "@ft/ui-components/admin/FullLoader";
 
 export default function Login() {
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-    });
+    const [formData, setFormData] = useState({ email: '', password: '', });
     const [message, setMessage] = useState({ msg: '', type: '' });
+    const [showLoader, setShowLoader] = useState(false);
     const router = useRouter();
     useEffect(() => {
         if (localStorage.getItem('userData')) {
@@ -21,15 +20,18 @@ export default function Login() {
     }, [router])
     const handleLogin = () => {
         if (formData.email && formData.email !== '' && formData.password && formData.password !== '') {
+            setShowLoader(true);
             setMessage({ msg: '', type: '' });
             fetchData('/api/auth', 'POST', formData).then((res) => {
                 if (res.status === 'success') {
                     localStorage.setItem('userData', JSON.stringify(res.data));
                     setTimeout(() => {
-                        router.push('/prospects')
+                        setShowLoader(false);
+                        router.push('/prospects');
                     }, 2500);
                 } else {
                     setMessage({ msg: 'Username password is invalid', type: 'error' });
+                    setShowLoader(false);
                 }
             });
         } else {
@@ -149,6 +151,9 @@ export default function Login() {
                                 </p>
                             </div>
                         </div>
+                        {
+                            showLoader ? <FullLoader /> : null
+                        }
                     </div>
                 </div>
             </div>

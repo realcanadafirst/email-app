@@ -118,22 +118,22 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, usertype = '2' }) => {
                             </li>
                             <li>
                                 <Link
-                                    href="/sequences"
-                                    className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname?.includes("sequences") && "bg-graydark dark:bg-meta-4"
-                                        }`}
-                                >
-                                    <SequenceIcon />
-                                    Sequences
-                                </Link>
-                            </li>
-                            <li>
-                                <Link
                                     href="/templates"
                                     className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname?.includes("templates") && "bg-graydark dark:bg-meta-4"
                                         }`}
                                 >
                                     <TemplateIcon />
                                     Templates
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    href="/sequences"
+                                    className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname?.includes("sequences") && "bg-graydark dark:bg-meta-4"
+                                        }`}
+                                >
+                                    <SequenceIcon />
+                                    Sequences
                                 </Link>
                             </li>
                             <li>

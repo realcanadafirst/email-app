@@ -32,6 +32,7 @@ function CustomEditor(props) {
             editor={Editor}
             config={editorConfiguration}
             data={props.initialData}
+            onReady={props.onReady}
             onChange={(event, editor) => {
                 const data = editor.getData();
                 props.dataChange(data);

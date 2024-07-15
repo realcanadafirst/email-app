@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { fetchData } from '@ft/services/apiService';
 import Alert from "@ft/ui-components/admin/Alert";
+import FullLoader from "@ft/ui-components/admin/FullLoader";
 
 export default function SignUp() {
     const [formData, setFormData] = useState({
@@ -15,6 +16,7 @@ export default function SignUp() {
         cnfPassword: ''
     });
     const [message, setMessage] = useState({ msg: '', type: '' });
+    const [showLoader, setShowLoader] = useState(false);
     const router = useRouter();
     useEffect(() => {
         if (localStorage.getItem('userData')) {
@@ -24,13 +26,16 @@ export default function SignUp() {
     const handleSignUp = () => {
         if (formData.name && formData.name !== '' && formData.email && formData.email !== '' && formData.password && formData.password !== '' && formData.cnfPassword && formData.cnfPassword !== '' && (formData.password == formData.cnfPassword)) {
             setMessage({ msg: '', type: '' });
+            setShowLoader(true);
             fetchData('/api/auth', 'POST', formData).then((res) => {
                 if (res.status === 'success') {
                     localStorage.setItem('userData', JSON.stringify(res.data));
                     setTimeout(() => {
-                        router.push('/prospects')
+                        setShowLoader(false);
+                        router.push('/prospects');
                     }, 2500);
                 } else {
+                    setShowLoader(false);
                     setMessage({ msg: res?.data ? res.data : "Something went wrong please try again.", type: 'error' });
                 }
             });
@@ -386,6 +391,9 @@ export default function SignUp() {
                             </div>
                         </div>
                     </div>
+                    {
+                        showLoader ? <FullLoader /> : null
+                    }
                 </div>
             </div>
         </GuestLayout>
