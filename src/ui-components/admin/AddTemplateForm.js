@@ -44,8 +44,8 @@ export default function AddTemplateForm({ formData, handleChange, dataChange, re
                     </label>
                     <p className="mb-3 text-black dark:text-white">
                         {
-                            suggestionText.map((val) => {
-                                return <CopyToClipboard text={val} >
+                            suggestionText.map((val, index) => {
+                                return <CopyToClipboard text={val} key={`input_${index}`} >
                                     <button className="px-3 text-sm" onClick={() => handleButtonClickSubject(val)}> {val} </button>
                                 </CopyToClipboard>
                             })
@@ -72,8 +72,8 @@ export default function AddTemplateForm({ formData, handleChange, dataChange, re
                 </label>
                 <p className="mb-3 text-black dark:text-white">
                     {
-                        suggestionText.map((val) => {
-                            return <CopyToClipboard text={val} >
+                        suggestionText.map((val, index) => {
+                            return <CopyToClipboard text={val}  key={`editor_${index}`}>
                                 <button className="px-3 text-sm" onClick={() => handleButtonClick(val)}> {val} </button>
                             </CopyToClipboard>
                         })
