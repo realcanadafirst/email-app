@@ -42,11 +42,11 @@ async function handlePostRequest(req, res) {
                             // await connection.execute(upquery, ['1', emailData[0]['id']]);
                         }
                     }
-                    res.status(200).json({ message: 'email sent.' });
+                    res.status(200).json({ message: 'email sent.'+updatedTime });
                 }
                 res.status(200).json({ error: 'Failed to get settings data' });
             } else {
-                res.status(200).json({ error: 'Failed to get data..' });
+                res.status(200).json({ error: 'Failed to get data..'+updatedTime });
             }
         } catch (error) {
             res.status(500).json({ error: 'Failed to get data.' });

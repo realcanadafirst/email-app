@@ -44,11 +44,10 @@ const DropdownUser = () => {
         fetchData('/api/auth', 'DELETE', formData).then((res) => {
             if (res.status === 'success') {
                 localStorage.removeItem('userData');
-                router.push('/');
             } else {
                 localStorage.removeItem('userData');
-                router.push('/')
             }
+            router.replace('/');
         });
     }
     return (
