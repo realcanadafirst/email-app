@@ -46,7 +46,7 @@ export default function AddTemplateForm({ formData, handleChange, dataChange, re
                         {
                             suggestionText.map((val) => {
                                 return <CopyToClipboard text={val} >
-                                    <button className="px-3" onClick={() => handleButtonClickSubject(val)}> {val} </button>
+                                    <button className="px-3 text-sm" onClick={() => handleButtonClickSubject(val)}> {val} </button>
                                 </CopyToClipboard>
                             })
                         }
@@ -74,7 +74,7 @@ export default function AddTemplateForm({ formData, handleChange, dataChange, re
                     {
                         suggestionText.map((val) => {
                             return <CopyToClipboard text={val} >
-                                <button className="px-3" onClick={() => handleButtonClick(val)}> {val} </button>
+                                <button className="px-3 text-sm" onClick={() => handleButtonClick(val)}> {val} </button>
                             </CopyToClipboard>
                         })
                     }
