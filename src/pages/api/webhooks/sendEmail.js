@@ -15,8 +15,12 @@ async function handlePostRequest(req, res) {
         const connection = await createConnection();
         connection.connect((err) => { if (err) { res.status(500).json({ error: 'Failed to connect to database' }); return; } });
         try {
-            const currentTime = new Date();
-            const updatedTime = format(currentTime, 'yyyy-MM-dd HH:mm:ss');
+            const currentTime = new Date().getTime();            
+            let updatedTime = new Date(currentTime + 19800000);
+            updatedTime = format(updatedTime, 'yyyy-MM-dd HH:mm:ss');
+
+            // const currentTime = new Date();
+            // const updatedTime = format(currentTime, 'yyyy-MM-dd HH:mm:ss');
             const [emailData] = await connection.execute(`SELECT * FROM emails WHERE created_at < '${updatedTime}' AND email_sent != '1' LIMIT 1`);
             if (emailData && emailData.length) {
                 const emailDataResult = emailData[0];
